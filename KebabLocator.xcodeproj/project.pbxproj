@@ -1,0 +1,405 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		03968FFF08EA9FCE636925CD /* YelpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C00BF81EA636B3E37DB4116 /* YelpService.swift */; };
+		03ADA023283DEBACDAE589CA /* HeroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B758D1F152C211068DE333 /* HeroView.swift */; };
+		10D2F8E958B0C75920E893AD /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FB0D557FE4022E47F32022 /* FavoritesView.swift */; };
+		2383CA7DFFA858457B811AB3 /* ShopDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4E2A22DD341CAA98D55D9C /* ShopDetailView.swift */; };
+		36D2B67947C2E6869C80664E /* KebabLocatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C33F743766492FC746CBF2 /* KebabLocatorApp.swift */; };
+		49046E1314C21E700BAD1069 /* MapTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7810534EA766DC91037C5692 /* MapTabView.swift */; };
+		4F5570B9820503D0AE9BCDF8 /* KebabShop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6E20FC9BB16AFF5725E5C0 /* KebabShop.swift */; };
+		6986FC1E016E0C31568ED224 /* OSMService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1AA46677F698FAE987B6CB /* OSMService.swift */; };
+		7626424EC6AEFAA201D714C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC7FCCB03672242513B55013 /* Assets.xcassets */; };
+		988FF13C15F50C46A97FFB43 /* GooglePlacesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C941C837A27737CF28CD55 /* GooglePlacesService.swift */; };
+		A0B0FBCB30F3A7C6F591FCF4 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F978E56AD56BD64650BFA101 /* HomeView.swift */; };
+		B524B7CDFDF208FE3DAE4E45 /* KebabPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D417D642E9307AE742A8506 /* KebabPlaceholderView.swift */; };
+		BCBCA2FB63619A4CDE5547B2 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F6425B18751AD999C24AB3 /* LocationManager.swift */; };
+		CCA11B4772B2C0ED9A71FEDF /* ExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8876F504963A41FFD106A7 /* ExploreView.swift */; };
+		D776277C5AF91564A888869A /* FavoritesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355FFDD34BA0A334DD02B76B /* FavoritesManager.swift */; };
+		F6F9EA6777FA9E4448435EB1 /* LocationInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AE7AE017B5A3BFC537B528 /* LocationInputView.swift */; };
+		F717C9DE939437965B4393B1 /* FoursquareService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84CD2186B4E853B9A84843F /* FoursquareService.swift */; };
+		FEB714911013D337D4BCC2B0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D245871E75FE5BFB1873CD24 /* ContentView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		10ABA8FAC622C90655356100 /* KebabLocator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KebabLocator.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C8876F504963A41FFD106A7 /* ExploreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreView.swift; sourceTree = "<group>"; };
+		2B6E20FC9BB16AFF5725E5C0 /* KebabShop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KebabShop.swift; sourceTree = "<group>"; };
+		2C4E2A22DD341CAA98D55D9C /* ShopDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopDetailView.swift; sourceTree = "<group>"; };
+		355FFDD34BA0A334DD02B76B /* FavoritesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesManager.swift; sourceTree = "<group>"; };
+		39C941C837A27737CF28CD55 /* GooglePlacesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GooglePlacesService.swift; sourceTree = "<group>"; };
+		42F6425B18751AD999C24AB3 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		5C00BF81EA636B3E37DB4116 /* YelpService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YelpService.swift; sourceTree = "<group>"; };
+		5F1AA46677F698FAE987B6CB /* OSMService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSMService.swift; sourceTree = "<group>"; };
+		7810534EA766DC91037C5692 /* MapTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTabView.swift; sourceTree = "<group>"; };
+		9D417D642E9307AE742A8506 /* KebabPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KebabPlaceholderView.swift; sourceTree = "<group>"; };
+		A0C33F743766492FC746CBF2 /* KebabLocatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KebabLocatorApp.swift; sourceTree = "<group>"; };
+		A84CD2186B4E853B9A84843F /* FoursquareService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoursquareService.swift; sourceTree = "<group>"; };
+		B6FB0D557FE4022E47F32022 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
+		B7AE7AE017B5A3BFC537B528 /* LocationInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputView.swift; sourceTree = "<group>"; };
+		D245871E75FE5BFB1873CD24 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		DC7FCCB03672242513B55013 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EDC1CC146A3DD61EF42CD378 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		F4B758D1F152C211068DE333 /* HeroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroView.swift; sourceTree = "<group>"; };
+		F978E56AD56BD64650BFA101 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		257CD53909FAC56DD79A5010 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A84CD2186B4E853B9A84843F /* FoursquareService.swift */,
+				39C941C837A27737CF28CD55 /* GooglePlacesService.swift */,
+				5F1AA46677F698FAE987B6CB /* OSMService.swift */,
+				5C00BF81EA636B3E37DB4116 /* YelpService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		6339882A78602FF5DDB1E3AC /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				355FFDD34BA0A334DD02B76B /* FavoritesManager.swift */,
+				42F6425B18751AD999C24AB3 /* LocationManager.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		653AB90B792401DCDA2A9F3D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D245871E75FE5BFB1873CD24 /* ContentView.swift */,
+				1C8876F504963A41FFD106A7 /* ExploreView.swift */,
+				B6FB0D557FE4022E47F32022 /* FavoritesView.swift */,
+				F4B758D1F152C211068DE333 /* HeroView.swift */,
+				F978E56AD56BD64650BFA101 /* HomeView.swift */,
+				9D417D642E9307AE742A8506 /* KebabPlaceholderView.swift */,
+				B7AE7AE017B5A3BFC537B528 /* LocationInputView.swift */,
+				7810534EA766DC91037C5692 /* MapTabView.swift */,
+				2C4E2A22DD341CAA98D55D9C /* ShopDetailView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		6BA1B65A48064CE520A2550A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2B6E20FC9BB16AFF5725E5C0 /* KebabShop.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		720FAA0A2D361FCC1D83E69A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				10ABA8FAC622C90655356100 /* KebabLocator.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AEBAB56552121AA0A8DEE44E /* KebabLocator */ = {
+			isa = PBXGroup;
+			children = (
+				DC7FCCB03672242513B55013 /* Assets.xcassets */,
+				EDC1CC146A3DD61EF42CD378 /* Info.plist */,
+				A0C33F743766492FC746CBF2 /* KebabLocatorApp.swift */,
+				6BA1B65A48064CE520A2550A /* Models */,
+				257CD53909FAC56DD79A5010 /* Services */,
+				6339882A78602FF5DDB1E3AC /* ViewModels */,
+				653AB90B792401DCDA2A9F3D /* Views */,
+			);
+			path = KebabLocator;
+			sourceTree = "<group>";
+		};
+		B091F6E2892078612858B73D = {
+			isa = PBXGroup;
+			children = (
+				AEBAB56552121AA0A8DEE44E /* KebabLocator */,
+				720FAA0A2D361FCC1D83E69A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7ED5EC053BD782372280ED97 /* KebabLocator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D771C5711F8813A0AFE07944 /* Build configuration list for PBXNativeTarget "KebabLocator" */;
+			buildPhases = (
+				E12C7BB8BAD861E0B7DFC24E /* Sources */,
+				6E585A8155A274B7CE048C78 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KebabLocator;
+			packageProductDependencies = (
+			);
+			productName = KebabLocator;
+			productReference = 10ABA8FAC622C90655356100 /* KebabLocator.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C8969CC810EA08625789AD8F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+			};
+			buildConfigurationList = CE22A19E88DABC692F757572 /* Build configuration list for PBXProject "KebabLocator" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = B091F6E2892078612858B73D;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 720FAA0A2D361FCC1D83E69A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7ED5EC053BD782372280ED97 /* KebabLocator */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6E585A8155A274B7CE048C78 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7626424EC6AEFAA201D714C7 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E12C7BB8BAD861E0B7DFC24E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEB714911013D337D4BCC2B0 /* ContentView.swift in Sources */,
+				CCA11B4772B2C0ED9A71FEDF /* ExploreView.swift in Sources */,
+				D776277C5AF91564A888869A /* FavoritesManager.swift in Sources */,
+				10D2F8E958B0C75920E893AD /* FavoritesView.swift in Sources */,
+				F717C9DE939437965B4393B1 /* FoursquareService.swift in Sources */,
+				988FF13C15F50C46A97FFB43 /* GooglePlacesService.swift in Sources */,
+				03ADA023283DEBACDAE589CA /* HeroView.swift in Sources */,
+				A0B0FBCB30F3A7C6F591FCF4 /* HomeView.swift in Sources */,
+				36D2B67947C2E6869C80664E /* KebabLocatorApp.swift in Sources */,
+				B524B7CDFDF208FE3DAE4E45 /* KebabPlaceholderView.swift in Sources */,
+				4F5570B9820503D0AE9BCDF8 /* KebabShop.swift in Sources */,
+				F6F9EA6777FA9E4448435EB1 /* LocationInputView.swift in Sources */,
+				BCBCA2FB63619A4CDE5547B2 /* LocationManager.swift in Sources */,
+				49046E1314C21E700BAD1069 /* MapTabView.swift in Sources */,
+				6986FC1E016E0C31568ED224 /* OSMService.swift in Sources */,
+				2383CA7DFFA858457B811AB3 /* ShopDetailView.swift in Sources */,
+				03968FFF08EA9FCE636925CD /* YelpService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1537DADC728F9B9DEB5DC04D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 449UNK2PZ9;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = KebabLocator/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lucas.KebabLocator2;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		952BEDA72A6410A347AEE2DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		D16CEA7280044395694B69DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 449UNK2PZ9;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = KebabLocator/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lucas.KebabLocator2;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E81EC512B68593781FAF1C0E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CE22A19E88DABC692F757572 /* Build configuration list for PBXProject "KebabLocator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E81EC512B68593781FAF1C0E /* Debug */,
+				952BEDA72A6410A347AEE2DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D771C5711F8813A0AFE07944 /* Build configuration list for PBXNativeTarget "KebabLocator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1537DADC728F9B9DEB5DC04D /* Debug */,
+				D16CEA7280044395694B69DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C8969CC810EA08625789AD8F /* Project object */;
+}
