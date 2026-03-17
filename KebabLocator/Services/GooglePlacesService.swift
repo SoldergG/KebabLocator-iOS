@@ -4,7 +4,7 @@ import CoreLocation
 class GooglePlacesService {
     static let shared = GooglePlacesService()
     
-    private let apiKey = "AIzaSyC6KOmVTLqopKiYE1cN9kT23VoPBCahNRw"
+    private let apiKey = "YOUR_GOOGLE_MAPS_API_KEY"
     private let baseURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
     
     func searchKebabs(at coordinate: CLLocationCoordinate2D, radius: Double, pageToken: String? = nil, completion: @escaping ([KebabShop]) -> Void) {
