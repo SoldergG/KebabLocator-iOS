@@ -4,16 +4,25 @@ import CoreLocation
 class GooglePlacesService {
     static let shared = GooglePlacesService()
     
-    private let apiKey = "YOUR_GOOGLE_MAPS_API_KEY"
+    private let apiKey = "AIzaSyBH0cZIc5Wkspk7Mvmuqfqizk6niK8gh-o"
     private let baseURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
     
     func searchKebabs(at coordinate: CLLocationCoordinate2D, radius: Double, pageToken: String? = nil, completion: @escaping ([KebabShop]) -> Void) {
+        searchPlaces(at: coordinate, radius: radius, keyword: "kebab", type: "restaurant", pageToken: pageToken, completion: completion)
+    }
+    
+    func searchConvenienceStores(at coordinate: CLLocationCoordinate2D, radius: Double, pageToken: String? = nil, completion: @escaping ([KebabShop]) -> Void) {
+        // Search specifically for convenience stores, supermarkets and liquor stores
+        searchPlaces(at: coordinate, radius: radius, keyword: "convenience store", type: "convenience_store", pageToken: pageToken, completion: completion)
+    }
+    
+    private func searchPlaces(at coordinate: CLLocationCoordinate2D, radius: Double, keyword: String, type: String, pageToken: String? = nil, completion: @escaping ([KebabShop]) -> Void) {
         var components = URLComponents(string: baseURL)!
         var queryItems = [
             URLQueryItem(name: "location", value: "\(coordinate.latitude),\(coordinate.longitude)"),
             URLQueryItem(name: "radius", value: "\(Int(radius))"),
-            URLQueryItem(name: "keyword", value: "kebab"),
-            URLQueryItem(name: "type", value: "restaurant"),
+            URLQueryItem(name: "keyword", value: keyword),
+            URLQueryItem(name: "type", value: type),
             URLQueryItem(name: "key", value: apiKey)
         ]
         
@@ -34,7 +43,7 @@ class GooglePlacesService {
             do {
                 let googleResponse = try JSONDecoder().decode(GoogleResponse.self, from: data)
                 
-                if googleResponse.status != "OK" {
+                if googleResponse.status != "OK" && googleResponse.status != "ZERO_RESULTS" {
                     print("Google API Status Error: \(googleResponse.status)")
                     if let errorMessage = googleResponse.errorMessage {
                         print("Google API Message: \(errorMessage)")
@@ -47,6 +56,10 @@ class GooglePlacesService {
                     let photoReference = result.photos?.first?.photoReference
                     let imageUrl = photoReference != nil ? "https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=\(photoReference!)&key=\(self.apiKey)" : ""
                     
+                    // Determine category based on type/keyword
+                    let category: KebabCategory = type == "convenience_store" ? .mixed : .doner
+                    let tags = type == "convenience_store" ? ["Convenience", "Google", "All Night"] : ["Kebab", "Google"]
+                    
                     return KebabShop(
                         id: result.placeId,
                         name: result.name,
@@ -57,19 +70,19 @@ class GooglePlacesService {
                             latitude: result.geometry.location.lat,
                             longitude: result.geometry.location.lng
                         ),
-                        tags: ["Kebab", "Google"],
+                        tags: tags,
                         price: String(repeating: "€", count: result.priceLevel ?? 2),
                         hours: "Open Now",
-                        openHour: 11,
-                        closeHour: 23,
-                        description: "Found via Google Places.",
+                        openHour: 0,
+                        closeHour: 24,
+                        description: type == "convenience_store" ? "Convenience store found via Google." : "Found via Google Places.",
                         imageName: imageUrl,
-                        category: .doner,
-                        phone: "", // Need Place Details for phone
-                        website: "", // Need Place Details for website
-                        popularDishes: ["Döner"],
+                        category: category,
+                        phone: "",
+                        website: "",
+                        popularDishes: type == "convenience_store" ? ["Snacks", "Drinks"] : ["Döner"],
                         hasDelivery: true,
-                        hasDineIn: true,
+                        hasDineIn: type != "convenience_store",
                         hasTakeaway: true
                     )
                 }

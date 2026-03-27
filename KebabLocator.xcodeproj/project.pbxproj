@@ -18,13 +18,20 @@
 		7626424EC6AEFAA201D714C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC7FCCB03672242513B55013 /* Assets.xcassets */; };
 		988FF13C15F50C46A97FFB43 /* GooglePlacesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C941C837A27737CF28CD55 /* GooglePlacesService.swift */; };
 		A0B0FBCB30F3A7C6F591FCF4 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F978E56AD56BD64650BFA101 /* HomeView.swift */; };
+		ADDKEBAB123 /* AddKebabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADDKEBABREF /* AddKebabView.swift */; };
 		B524B7CDFDF208FE3DAE4E45 /* KebabPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D417D642E9307AE742A8506 /* KebabPlaceholderView.swift */; };
+		BANNER789 /* BannerAdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BANNERREF /* BannerAdView.swift */; };
 		BCBCA2FB63619A4CDE5547B2 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F6425B18751AD999C24AB3 /* LocationManager.swift */; };
 		CCA11B4772B2C0ED9A71FEDF /* ExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8876F504963A41FFD106A7 /* ExploreView.swift */; };
+		CONVENIENCE123 /* ConvenienceStoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CONVENIENCEREF /* ConvenienceStoreService.swift */; };
 		D776277C5AF91564A888869A /* FavoritesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355FFDD34BA0A334DD02B76B /* FavoritesManager.swift */; };
+		F00000000000000000000002 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = A0B9E6172F6A113F002B8BA0 /* GoogleMobileAds */; };
 		F6F9EA6777FA9E4448435EB1 /* LocationInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AE7AE017B5A3BFC537B528 /* LocationInputView.swift */; };
 		F717C9DE939437965B4393B1 /* FoursquareService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84CD2186B4E853B9A84843F /* FoursquareService.swift */; };
 		FEB714911013D337D4BCC2B0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D245871E75FE5BFB1873CD24 /* ContentView.swift */; };
+		GLASS123 /* GlassModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = GLASSREF /* GlassModifiers.swift */; };
+		REPORT123 /* ReportPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = REPORTREF /* ReportPlaceView.swift */; };
+		SUBMIT456 /* SubmitVerificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = SUBMITREF /* SubmitVerificationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,14 +48,31 @@
 		9D417D642E9307AE742A8506 /* KebabPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KebabPlaceholderView.swift; sourceTree = "<group>"; };
 		A0C33F743766492FC746CBF2 /* KebabLocatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KebabLocatorApp.swift; sourceTree = "<group>"; };
 		A84CD2186B4E853B9A84843F /* FoursquareService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoursquareService.swift; sourceTree = "<group>"; };
+		ADDKEBABREF /* AddKebabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddKebabView.swift; sourceTree = "<group>"; };
 		B6FB0D557FE4022E47F32022 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 		B7AE7AE017B5A3BFC537B528 /* LocationInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputView.swift; sourceTree = "<group>"; };
+		BANNERREF /* BannerAdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerAdView.swift; sourceTree = "<group>"; };
+		CONVENIENCEREF /* ConvenienceStoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvenienceStoreService.swift; sourceTree = "<group>"; };
 		D245871E75FE5BFB1873CD24 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DC7FCCB03672242513B55013 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EDC1CC146A3DD61EF42CD378 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		F4B758D1F152C211068DE333 /* HeroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroView.swift; sourceTree = "<group>"; };
 		F978E56AD56BD64650BFA101 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		GLASSREF /* GlassModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassModifiers.swift; sourceTree = "<group>"; };
+		REPORTREF /* ReportPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportPlaceView.swift; sourceTree = "<group>"; };
+		SUBMITREF /* SubmitVerificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitVerificationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F00000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F00000000000000000000002 /* GoogleMobileAds in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		257CD53909FAC56DD79A5010 /* Services */ = {
@@ -58,6 +82,7 @@
 				39C941C837A27737CF28CD55 /* GooglePlacesService.swift */,
 				5F1AA46677F698FAE987B6CB /* OSMService.swift */,
 				5C00BF81EA636B3E37DB4116 /* YelpService.swift */,
+				CONVENIENCEREF /* ConvenienceStoreService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -74,6 +99,7 @@
 		653AB90B792401DCDA2A9F3D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				GLASSREF /* GlassModifiers.swift */,
 				D245871E75FE5BFB1873CD24 /* ContentView.swift */,
 				1C8876F504963A41FFD106A7 /* ExploreView.swift */,
 				B6FB0D557FE4022E47F32022 /* FavoritesView.swift */,
@@ -83,6 +109,10 @@
 				B7AE7AE017B5A3BFC537B528 /* LocationInputView.swift */,
 				7810534EA766DC91037C5692 /* MapTabView.swift */,
 				2C4E2A22DD341CAA98D55D9C /* ShopDetailView.swift */,
+				REPORTREF /* ReportPlaceView.swift */,
+				SUBMITREF /* SubmitVerificationView.swift */,
+				ADDKEBABREF /* AddKebabView.swift */,
+				BANNERREF /* BannerAdView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -133,6 +163,7 @@
 			buildConfigurationList = D771C5711F8813A0AFE07944 /* Build configuration list for PBXNativeTarget "KebabLocator" */;
 			buildPhases = (
 				E12C7BB8BAD861E0B7DFC24E /* Sources */,
+				F00000000000000000000001 /* Frameworks */,
 				6E585A8155A274B7CE048C78 /* Resources */,
 			);
 			buildRules = (
@@ -141,6 +172,7 @@
 			);
 			name = KebabLocator;
 			packageProductDependencies = (
+				A0B9E6172F6A113F002B8BA0 /* GoogleMobileAds */,
 			);
 			productName = KebabLocator;
 			productReference = 10ABA8FAC622C90655356100 /* KebabLocator.app */;
@@ -164,6 +196,9 @@
 			);
 			mainGroup = B091F6E2892078612858B73D;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A0B9E6162F6A113F002B8BA0 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 720FAA0A2D361FCC1D83E69A /* Products */;
 			projectDirPath = "";
@@ -190,6 +225,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				GLASS123 /* GlassModifiers.swift in Sources */,
 				FEB714911013D337D4BCC2B0 /* ContentView.swift in Sources */,
 				CCA11B4772B2C0ED9A71FEDF /* ExploreView.swift in Sources */,
 				D776277C5AF91564A888869A /* FavoritesManager.swift in Sources */,
@@ -207,6 +243,11 @@
 				6986FC1E016E0C31568ED224 /* OSMService.swift in Sources */,
 				2383CA7DFFA858457B811AB3 /* ShopDetailView.swift in Sources */,
 				03968FFF08EA9FCE636925CD /* YelpService.swift in Sources */,
+				REPORT123 /* ReportPlaceView.swift in Sources */,
+				SUBMIT456 /* SubmitVerificationView.swift in Sources */,
+				ADDKEBAB123 /* AddKebabView.swift in Sources */,
+				CONVENIENCE123 /* ConvenienceStoreService.swift in Sources */,
+				BANNER789 /* BannerAdView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,12 +263,14 @@
 				DEVELOPMENT_TEAM = 449UNK2PZ9;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = KebabLocator/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = KebabLocator;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lucas.KebabLocator2;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -301,12 +344,14 @@
 				DEVELOPMENT_TEAM = 449UNK2PZ9;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = KebabLocator/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = KebabLocator;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lucas.KebabLocator2;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -400,6 +445,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A0B9E6162F6A113F002B8BA0 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 13.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A0B9E6172F6A113F002B8BA0 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A0B9E6162F6A113F002B8BA0 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C8969CC810EA08625789AD8F /* Project object */;
 }

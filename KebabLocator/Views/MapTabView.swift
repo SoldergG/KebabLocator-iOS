@@ -5,9 +5,11 @@ import MapKit
 
 struct MapTabView: View {
     @EnvironmentObject var locationManager: LocationManager
+    @EnvironmentObject var favoritesManager: FavoritesManager
     @State private var selectedShop: KebabShop?
     @State private var selectedShopID: String?
     @State private var showDetail = false
+    @State private var showFilters: Bool = false
     @State private var cameraPosition: MapCameraPosition = .region(
         MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: 38.7167, longitude: -9.1395),
@@ -16,104 +18,134 @@ struct MapTabView: View {
     )
     
     private var allShops: [KebabShop] {
-        locationManager.liveShops + KebabShop.sampleData
+        let live = Array(locationManager.liveShops)
+        let saved = Array(favoritesManager.allShops)
+        return live + saved
     }
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                // Map
-                Map(position: $cameraPosition, selection: $selectedShopID) {
-                    // User location
-                    if let location = locationManager.userLocation {
-                        Annotation("You", coordinate: location.coordinate) {
-                            ZStack {
-                                Circle()
-                                    .fill(Color.blue.opacity(0.2))
-                                    .frame(width: 40, height: 40)
-                                Circle()
-                                    .fill(Color.blue)
-                                    .frame(width: 14, height: 14)
-                                    .overlay(
-                                        Circle().stroke(Color.white, lineWidth: 2)
-                                    )
-                            }
+            Map(position: $cameraPosition, selection: $selectedShopID) {
+                // User location
+                if let location = locationManager.userLocation {
+                    Annotation("You", coordinate: location.coordinate) {
+                        ZStack {
+                            Circle()
+                                .fill(Color.blue.opacity(0.2))
+                                .frame(width: 40, height: 40)
+                            Circle()
+                                .fill(Color.blue)
+                                .frame(width: 14, height: 14)
+                                .overlay(
+                                    Circle().stroke(Color.white, lineWidth: 2)
+                                )
                         }
-                    }
-                    
-                    // Kebab shop markers
-                    ForEach(allShops) { shop in
-                        Annotation(shop.name, coordinate: shop.coordinate) {
-                            KebabMarker(
-                                shop: shop,
-                                isSelected: selectedShop?.id == shop.id
-                            )
-                        }
-                        .tag(shop.id)
-                    }
-                }
-                .mapStyle(.standard(elevation: .flat, pointsOfInterest: .excludingAll))
-                .colorScheme(.dark)
-                .ignoresSafeArea(edges: .bottom)
-                .onChange(of: selectedShopID) { oldID, newID in
-                    if let newID = newID {
-                        selectedShop = allShops.first(where: { $0.id == newID })
-                    } else {
-                        selectedShop = nil
                     }
                 }
                 
-                // Bottom info card when shop selected
-                if let shop = selectedShop, !showDetail {
-                    VStack {
-                        Spacer()
-                        bottomCard(shop: shop)
-                            .padding(.horizontal, 16)
-                            .padding(.bottom, 16)
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                // Kebab shop markers
+                ForEach(allShops) { shop in
+                    Annotation(shop.name, coordinate: shop.coordinate) {
+                        KebabMarker(
+                            shop: shop,
+                            isSelected: selectedShop?.id == shop.id
+                        )
                     }
-                    .animation(.spring(response: 0.4, dampingFraction: 0.8), value: selectedShop?.id)
+                    .tag(shop.id)
                 }
             }
+            .mapStyle(.standard(elevation: .flat, pointsOfInterest: .excludingAll))
+            .colorScheme(.dark)
+            .ignoresSafeArea(edges: [.bottom])
             .navigationTitle("Map")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.bgPrimary, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+            
+            // Overlays
+            .overlay(alignment: .top) {
+                // Ad Banner at top
+                VStack(spacing: 0) {
+                    BannerAd(adUnitID: "ca-app-pub-3940256099942544/2934735716", height: 50)
+                        .frame(height: 50)
+                    
+                    // Top gradient overlay
+                    LinearGradient(
+                        gradient: Gradient(colors: [Color.bgPrimary, Color.clear]),
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .frame(height: 100)
+                }
+            }
+            .overlay(alignment: .bottom) {
+                // Bottom info card
+                if let shop = selectedShop, !showDetail {
+                    bottomCard(shop: shop)
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 16)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: selectedShop?.id)
+                }
+            }
             .overlay(alignment: .bottomTrailing) {
                 // Floating Locate Me Button
                 if selectedShop == nil {
-                    Button {
-                        withAnimation {
-                            if let location = locationManager.userLocation {
-                                cameraPosition = .region(MKCoordinateRegion(
-                                    center: location.coordinate,
-                                    span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
-                                ))
-                            }
+                    VStack(spacing: 12) {
+                        // Refresh button
+                        Button {
+                            favoritesManager.fetchShops(forceRefresh: true)
+                        } label: {
+                            Image(systemName: "arrow.clockwise")
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundColor(.white)
+                                .frame(width: 44, height: 44)
+                                .background(Color.surface)
+                                .clipShape(Circle())
+                                .shadow(radius: 4)
                         }
-                        let generator = UIImpactFeedbackGenerator(style: .medium)
-                        generator.impactOccurred()
-                    } label: {
-                        Image(systemName: "location.fill")
-                            .font(.system(size: 20, weight: .semibold))
-                            .foregroundColor(.white)
-                            .frame(width: 50, height: 50)
-                            .background(Color.accentOrange)
-                            .clipShape(Circle())
-                            .shadow(color: .accentGlow, radius: 8, x: 0, y: 4)
+                        
+                        Button {
+                            withAnimation {
+                                if let location = locationManager.userLocation {
+                                    cameraPosition = .region(MKCoordinateRegion(
+                                        center: location.coordinate,
+                                        span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+                                    ))
+                                }
+                            }
+                        } label: {
+                            Image(systemName: "location.fill")
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundColor(.white)
+                                .frame(width: 50, height: 50)
+                                .background(Color.accentOrange)
+                                .clipShape(Circle())
+                                .shadow(radius: 4)
+                        }
                     }
                     .padding(.trailing, 16)
-                    .padding(.bottom, 24)
-                    .transition(.scale.combined(with: .opacity))
+                    .padding(.bottom, 32)
                 }
             }
-
+            .onChange(of: selectedShopID) { oldID, newID in
+                if let newID = newID {
+                    selectedShop = allShops.first(where: { $0.id == newID })
+                } else {
+                    selectedShop = nil
+                }
+            }
             .sheet(isPresented: $showDetail) {
                 if let shop = selectedShop {
                     ShopDetailView(shop: shop, userLocation: locationManager.effectiveLocation)
                 }
             }
             .onAppear {
+                // Load shops from Supabase
+                if favoritesManager.allShops.isEmpty {
+                    favoritesManager.fetchShops()
+                }
+                
                 if let location = locationManager.userLocation {
                     cameraPosition = .region(MKCoordinateRegion(
                         center: location.coordinate,
@@ -216,7 +248,7 @@ struct KebabMarker: View {
                     .frame(width: isSelected ? 44 : 38, height: isSelected ? 44 : 38)
                     .shadow(color: .accentGlow, radius: isSelected ? 10 : 4)
                 
-                Image(systemName: "fork.knife")
+                Image(systemName: shop.category.sfSymbol)
                     .font(.system(size: isSelected ? 18 : 16, weight: .bold))
                     .foregroundColor(.white)
             }

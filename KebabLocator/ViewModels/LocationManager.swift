@@ -1,7 +1,7 @@
 import Foundation
+import SwiftUI
 import CoreLocation
 import MapKit
-import SwiftUI
 
 // MARK: - Location Manager
 
@@ -22,8 +22,15 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var isFetchingLiveShops: Bool = false
     @Published var searchRadius: Double = 10.0 // Default 10km
     
+    // Convenience Stores
+    @Published var convenienceStores: [KebabShop] = []
+    @Published var isFetchingConvenienceStores: Bool = false
+    
     private var lastSearchLocation: CLLocation?
     private let searchCompleter = MKLocalSearchCompleter()
+    
+    // Cache keys
+    private let cachedLiveShopsKey = "cached_live_shops"
     
     // Default: Lisbon
     private let defaultLocation = CLLocation(latitude: 38.7167, longitude: -9.1395)
@@ -38,6 +45,9 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         manager.desiredAccuracy = kCLLocationAccuracyBest
         searchCompleter.delegate = self
         searchCompleter.resultTypes = .address
+        
+        // Load cached live shops immediately
+        loadCachedLiveShops()
         
         // Initial search
         searchNearbyKebabs(at: defaultLocation)
@@ -118,8 +128,8 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         group.notify(queue: .main) { [weak self] in
             self?.isFetchingLiveShops = false
             
-            // De-duplicate by name and rough coordinate (to avoid same shop from different APIs)
-            var uniqueShops: [KebabShop] = []
+            // De-duplicate against existing shops to accumulate them
+            var uniqueShops: [KebabShop] = self?.liveShops ?? []
             for shop in allFoundShops {
                 let isDuplicate = uniqueShops.contains { existing in
                     let nameMatch = existing.name.lowercased() == shop.name.lowercased()
@@ -133,6 +143,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
             }
             
             self?.liveShops = uniqueShops
+            self?.cacheLiveShops()
         }
     }
     
@@ -159,6 +170,26 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         }
     }
     
+    func reverseGeocode(location: CLLocation, completion: @escaping (String?) -> Void) {
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location) { placemarks, error in
+            DispatchQueue.main.async {
+                if let placemark = placemarks?.first {
+                    let address = [
+                        placemark.thoroughfare,
+                        placemark.subThoroughfare,
+                        placemark.locality,
+                        placemark.postalCode,
+                        placemark.country
+                    ].compactMap { $0 }.joined(separator: ", ")
+                    completion(address)
+                } else {
+                    completion(nil)
+                }
+            }
+        }
+    }
+    
     func selectCompletion(_ completion: MKLocalSearchCompletion) {
         let request = MKLocalSearch.Request(completion: completion)
         let search = MKLocalSearch(request: request)
@@ -171,6 +202,85 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
                     let address = "\(completion.title), \(completion.subtitle)"
                     self?.setManualLocation(coordinate: coordinate, address: address)
                 }
+            }
+        }
+    }
+    
+    // MARK: - Live Shops Caching
+    
+    private func cacheLiveShops() {
+        do {
+            let data = try JSONEncoder().encode(liveShops)
+            UserDefaults.standard.set(data, forKey: cachedLiveShopsKey)
+        } catch {
+            print("Cache liveShops save error: \(error)")
+        }
+    }
+    
+    private func loadCachedLiveShops() {
+        guard let data = UserDefaults.standard.data(forKey: cachedLiveShopsKey) else { return }
+        do {
+            let shops = try JSONDecoder().decode([KebabShop].self, from: data)
+            self.liveShops = shops
+        } catch {
+            print("Cache liveShops load error: \(error)")
+        }
+    }
+    
+    // MARK: - Convenience Store Search
+    
+    func searchNearbyConvenienceStores(at location: CLLocation? = nil) {
+        let targetLocation = location ?? effectiveLocation
+        isFetchingConvenienceStores = true
+        
+        let group = DispatchGroup()
+        var allFoundStores: [KebabShop] = []
+        let lock = NSLock()
+        
+        // 1. OpenStreetMap (via ConvenienceStoreService)
+        group.enter()
+        ConvenienceStoreService.shared.searchAllConveniencePlaces(near: targetLocation) { stores in
+            lock.lock()
+            allFoundStores.append(contentsOf: stores)
+            lock.unlock()
+            group.leave()
+        }
+        
+        // 2. Google Places
+        group.enter()
+        GooglePlacesService.shared.searchConvenienceStores(at: targetLocation.coordinate, radius: searchRadius * 1000) { stores in
+            lock.lock()
+            allFoundStores.append(contentsOf: stores)
+            lock.unlock()
+            group.leave()
+        }
+        
+        group.notify(queue: .main) { [weak self] in
+            guard let self = self else { return }
+            self.isFetchingConvenienceStores = false
+            
+            // De-duplicate by name and rough coordinate
+            var uniqueStores: [KebabShop] = []
+            for store in allFoundStores {
+                let isDuplicate = uniqueStores.contains { existing in
+                    let nameMatch = existing.name.lowercased() == store.name.lowercased()
+                    let dist = CLLocation(latitude: existing.coordinate.latitude, longitude: existing.coordinate.longitude)
+                        .distance(from: CLLocation(latitude: store.coordinate.latitude, longitude: store.coordinate.longitude))
+                    return nameMatch && dist < 50
+                }
+                
+                // If it's a "sample" store from ConvenienceStoreService, only keep it if we have no real stores
+                if store.id.starts(with: "sample-") && allFoundStores.contains(where: { !$0.id.starts(with: "sample-") && !$0.id.starts(with: "conv_") }) {
+                    continue
+                }
+                
+                if !isDuplicate {
+                    uniqueStores.append(store)
+                }
+            }
+            
+            self.convenienceStores = uniqueStores.sorted {
+                $0.distance(from: targetLocation) < $1.distance(from: targetLocation)
             }
         }
     }

@@ -11,6 +11,14 @@ struct ShopDetailView: View {
     @State private var animateIn = false
     @State private var showDirectionsMenu = false
     @State private var lookAroundScene: MKLookAroundScene?
+    @State private var showReportSheet = false
+    @State private var showVerificationSheet = false
+    
+    // Pseudo-dynamic confirmation count
+    private var confirmationsNeeded: Int {
+        let base = (abs(shop.id.hashValue) % 2) + 2
+        return favoritesManager.hasVerified(shop) ? max(1, base - 1) : base
+    }
     
     var body: some View {
         ZStack {
@@ -165,6 +173,10 @@ struct ShopDetailView: View {
                         // Action Buttons
                         actionButtons
                         
+                        // Banner Ad
+                        BannerAd(adUnitID: "ca-app-pub-3940256099942544/6300978111", height: 50)
+                            .padding(.top, 16)
+                            
                         Spacer(minLength: 40)
                     }
                     .padding(20)
@@ -259,18 +271,16 @@ struct ShopDetailView: View {
         ZStack(alignment: .bottomLeading) {
             // Base layer: The actual shop image (Always present as fallback)
             Group {
-                if shop.imageName.hasPrefix("http") {
-                    AsyncImage(url: URL(string: shop.imageName)) { phase in
+                if let imageURL = shop.displayImageURL {
+                    AsyncImage(url: imageURL) { phase in
                         if let image = phase.image {
                             image.resizable().aspectRatio(contentMode: .fill)
                         } else {
-                            ZStack { Color.surface; Image(systemName: "fork.knife").foregroundColor(.textMuted) }
+                            ZStack { Color.surface; Image(systemName: "fork.knife").font(.system(size: 40)).foregroundColor(.textMuted) }
                         }
                     }
                 } else {
-                    Image(shop.imageName)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
+                    ZStack { Color.surface; Image(systemName: "fork.knife").font(.system(size: 40)).foregroundColor(.textMuted) }
                 }
             }
             .frame(height: 240)
@@ -309,9 +319,9 @@ struct ShopDetailView: View {
     
     private var infoGrid: some View {
         HStack(spacing: 12) {
-            InfoCard(icon: "🕐", title: "Hours", value: shop.hours)
-            InfoCard(icon: "💰", title: "Price", value: shop.price)
-            InfoCard(icon: "📍", title: "Distance", value: String(format: "%.1f km", shop.distance(from: userLocation)))
+            InfoCard(systemIcon: "clock.fill", title: "Hours", value: shop.hours)
+            InfoCard(systemIcon: "eurosign.circle.fill", title: "Price", value: shop.price)
+            InfoCard(systemIcon: "mappin.circle.fill", title: "Distance", value: String(format: "%.1f km", shop.distance(from: userLocation)))
         }
     }
     
@@ -341,8 +351,9 @@ struct ShopDetailView: View {
             
             ForEach(shop.popularDishes, id: \.self) { dish in
                 HStack(spacing: 10) {
-                    Text("🔥")
+                    Image(systemName: "flame.fill")
                         .font(.system(size: 14))
+                        .foregroundColor(.accentOrange)
                     Text(dish)
                         .font(.system(size: 14, weight: .medium))
                         .foregroundColor(.textSecondary)
@@ -351,10 +362,21 @@ struct ShopDetailView: View {
                 .padding(12)
                 .background(
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.surface)
+                        .fill(.ultraThinMaterial)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color.white.opacity(0.04), lineWidth: 1)
+                                .fill(Color.surface.opacity(0.4))
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(
+                                    LinearGradient(
+                                        colors: [Color.white.opacity(0.1), Color.white.opacity(0.03)],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ),
+                                    lineWidth: 0.8
+                                )
                         )
                 )
             }
@@ -397,10 +419,21 @@ struct ShopDetailView: View {
                     .frame(height: 52)
                     .background(
                         RoundedRectangle(cornerRadius: 16)
-                            .fill(Color.surface)
+                            .fill(.ultraThinMaterial)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 16)
-                                    .stroke(Color.white.opacity(0.08), lineWidth: 1)
+                                    .fill(Color.surface.opacity(0.5))
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(
+                                        LinearGradient(
+                                            colors: [Color.white.opacity(0.12), Color.white.opacity(0.04)],
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        ),
+                                        lineWidth: 1
+                                    )
                             )
                     )
                 }
@@ -429,29 +462,159 @@ struct ShopDetailView: View {
                 }
             }
             
-            // Website
+            // Website / Attribution
             if !shop.website.isEmpty {
-                Link(destination: URL(string: "https://\(shop.website)")!) {
-                    HStack(spacing: 10) {
-                        Image(systemName: "globe")
-                            .font(.system(size: 16, weight: .semibold))
-                        Text(shop.website)
-                            .font(.system(size: 15, weight: .medium))
+                let lowerUrl = shop.website.lowercased()
+                
+                if lowerUrl.contains("yelp") {
+                    attributionBadge(text: "Authentic Kebab found via Yelp")
+                } else if lowerUrl.contains("google") || lowerUrl.contains("maps") || lowerUrl.contains("osm") || lowerUrl.contains("openstreetmap") {
+                    attributionBadge(text: "Authentic Kebab found via Maps")
+                } else if lowerUrl.contains("foursquare") {
+                    attributionBadge(text: "Authentic Kebab found via Foursquare")
+                } else {
+                    // Actual restaurant website
+                    Link(destination: URL(string: shop.website.hasPrefix("http") ? shop.website : "https://\(shop.website)")!) {
+                        HStack(spacing: 10) {
+                            Image(systemName: "globe")
+                                .font(.system(size: 16, weight: .semibold))
+                            Text(shop.website)
+                                .font(.system(size: 15, weight: .medium))
+                        }
+                        .foregroundColor(.accentOrange)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 52)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(Color.accentOrange.opacity(0.08))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .stroke(Color.accentOrange.opacity(0.15), lineWidth: 1)
+                                )
+                        )
                     }
-                    .foregroundColor(.accentOrange)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 52)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color.accentOrange.opacity(0.08))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 16)
-                                    .stroke(Color.accentOrange.opacity(0.15), lineWidth: 1)
-                            )
-                    )
+                }
+            }
+            
+            // Verification Status & Actions
+            VStack(spacing: 12) {
+                // Verification Status
+                HStack {
+                    if favoritesManager.hasVerified(shop) {
+                        Image(systemName: "checkmark.seal.fill")
+                            .font(.system(size: 16))
+                            .foregroundColor(.openGreen)
+                        
+                        Text("You confirmed this place")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(.openGreen)
+                    } else {
+                        Image(systemName: shop.isVerified ? "checkmark.shield.fill" : "clock.fill")
+                            .font(.system(size: 16))
+                            .foregroundColor(shop.isVerified ? .openGreen : .orange)
+                        
+                        Text(shop.isVerified ? "Verified Place" : "Pending Verification")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(shop.isVerified ? .openGreen : .orange)
+                    }
+                    
+                    Spacer()
+                    
+                    if !shop.isVerified {
+                        Text("Needs \(confirmationsNeeded) more confirmation\(confirmationsNeeded == 1 ? "" : "s")")
+                            .font(.system(size: 12))
+                            .foregroundColor(.textMuted)
+                    }
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill((shop.isVerified || favoritesManager.hasVerified(shop) ? Color.openGreen : Color.orange).opacity(0.1))
+                )
+                
+                // Action Buttons
+                HStack(spacing: 12) {
+                    // Confirm Button (only if not verified by this device and not globally verified)
+                    if !shop.isVerified && !favoritesManager.hasVerified(shop) {
+                        Button {
+                            showVerificationSheet = true
+                        } label: {
+                            HStack(spacing: 8) {
+                                Image(systemName: "checkmark.shield.fill")
+                                    .font(.system(size: 14, weight: .bold))
+                                Text("Confirm Exists")
+                                    .font(.system(size: 14, weight: .bold))
+                            }
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 48)
+                            .background(Color.openGreen)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
+                    }
+                    
+                    // Report Button (or Reported State)
+                    if favoritesManager.hasReported(shop) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "flag.fill")
+                                .font(.system(size: 14, weight: .bold))
+                            Text("Reported by You")
+                                .font(.system(size: 14, weight: .bold))
+                        }
+                        .foregroundColor(.closedRed)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 48)
+                        .background(Color.closedRed.opacity(0.15))
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                    } else {
+                        Button {
+                            showReportSheet = true
+                        } label: {
+                            HStack(spacing: 8) {
+                                Image(systemName: "flag.fill")
+                                    .font(.system(size: 14, weight: .bold))
+                                Text("Report")
+                                    .font(.system(size: 14, weight: .bold))
+                            }
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 48)
+                            .background(Color.closedRed)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
+                    }
                 }
             }
         }
+        .sheet(isPresented: $showReportSheet) {
+            ReportPlaceView(shop: shop)
+        }
+        .sheet(isPresented: $showVerificationSheet) {
+            SubmitVerificationView(shop: shop)
+        }
+    }
+    
+    // MARK: - Attribution Badge
+    
+    private func attributionBadge(text: String) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: "checkmark.seal.fill")
+                .foregroundColor(.accentOrange)
+            Text(text)
+                .font(.system(size: 14, weight: .semibold, design: .rounded))
+                .foregroundColor(.textSecondary)
+        }
+        .frame(maxWidth: .infinity)
+        .frame(height: 52)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.surface.opacity(0.3))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(Color.white.opacity(0.05), lineWidth: 1)
+                )
+        )
     }
 }
 
@@ -475,10 +638,24 @@ struct ServiceOption: View {
         .frame(maxWidth: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .fill(available ? Color.surface : Color.surface.opacity(0.3))
+                .fill(.ultraThinMaterial)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(available ? Color.white.opacity(0.06) : Color.white.opacity(0.03), lineWidth: 1)
+                        .fill(available ? Color.surface.opacity(0.4) : Color.surface.opacity(0.15))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(
+                            LinearGradient(
+                                colors: [
+                                    available ? Color.white.opacity(0.1) : Color.white.opacity(0.04),
+                                    Color.white.opacity(0.02)
+                                ],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ),
+                            lineWidth: 0.8
+                        )
                 )
         )
         .overlay(alignment: .topTrailing) {
@@ -495,14 +672,15 @@ struct ServiceOption: View {
 // MARK: - Info Card
 
 struct InfoCard: View {
-    let icon: String
+    let systemIcon: String
     let title: String
     let value: String
     
     var body: some View {
         VStack(spacing: 6) {
-            Text(icon)
+            Image(systemName: systemIcon)
                 .font(.system(size: 20))
+                .foregroundColor(.accentOrange)
             
             Text(title)
                 .font(.system(size: 10, weight: .medium))
@@ -518,14 +696,7 @@ struct InfoCard: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 14)
-        .background(
-            RoundedRectangle(cornerRadius: 14)
-                .fill(Color.surface)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 14)
-                        .stroke(Color.white.opacity(0.06), lineWidth: 1)
-                )
-        )
+        .glassCard(cornerRadius: 14, opacity: 0.06, borderOpacity: 0.1)
     }
 }
 

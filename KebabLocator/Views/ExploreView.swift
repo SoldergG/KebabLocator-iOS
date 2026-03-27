@@ -12,9 +12,10 @@ struct ExploreView: View {
     @State private var selectedShop: KebabShop?
     @State private var showDetail = false
     @State private var showSortMenu = false
+    @State private var shakeOffset: CGFloat = 0
     
     private var filteredShops: [KebabShop] {
-        var shops = locationManager.liveShops + KebabShop.sampleData
+        var shops = Array(locationManager.liveShops) + Array(favoritesManager.allShops)
         
         // Apply filter
         switch selectedFilter {
@@ -68,12 +69,47 @@ struct ExploreView: View {
             ZStack {
                 Color.bgPrimary.ignoresSafeArea()
                 
+                // Ambient glass blobs
+                Circle()
+                    .fill(Color.accentOrange.opacity(0.04))
+                    .blur(radius: 80)
+                    .frame(width: 250, height: 250)
+                    .offset(x: -80, y: -150)
+                    .ignoresSafeArea()
+                
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 0) {
+                        // Inline Hero Header
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("Discover")
+                                .font(.system(size: 32, weight: .black, design: .rounded))
+                                .foregroundColor(.textPrimary)
+                            Text("Find your next favorite spot nearby")
+                                .font(.system(size: 15))
+                                .foregroundColor(.textMuted)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal, 16)
+                        .padding(.top, 16)
+                        .padding(.bottom, 12)
+                        
                         // Search Bar
                         searchBar
                             .padding(.horizontal, 16)
                             .padding(.top, 8)
+                            .offset(x: shakeOffset)
+                            .onChange(of: searchText) { _, newValue in
+                                if newValue == "67" {
+                                    withAnimation(.default) {
+                                        let shakeSequence: [CGFloat] = [10, -10, 8, -8, 5, -5, 2, -2, 0]
+                                        for (index, offset) in shakeSequence.enumerated() {
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + Double(index) * 0.05) {
+                                                self.shakeOffset = offset
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         
                         // Filter Chips
                         filterChips
@@ -85,12 +121,17 @@ struct ExploreView: View {
                             .padding(.top, 20)
                             .padding(.bottom, 12)
                         
+                        // Ad Banner
+                        BannerAd(adUnitID: "ca-app-pub-3940256099942544/1712485313", height: 50)
+                            .padding(.horizontal, 16)
+                        
                         // Shop Cards
                         if filteredShops.isEmpty {
                             noResultsView
                         } else {
                             LazyVStack(spacing: 12) {
-                                ForEach(filteredShops) { shop in
+                                ForEach(Array(filteredShops.enumerated()), id: \.offset) { index, shop in
+                                    
                                     ShopCardView(
                                         shop: shop,
                                         userLocation: locationManager.effectiveLocation,
@@ -116,15 +157,19 @@ struct ExploreView: View {
             }
             .refreshable {
                 locationManager.searchNearbyKebabs(at: locationManager.effectiveLocation)
+                favoritesManager.fetchShops(forceRefresh: true)
                 try? await Task.sleep(nanoseconds: 1_000_000_000)
             }
             .onChange(of: locationManager.searchRadius) {
                 locationManager.searchNearbyKebabs(at: locationManager.effectiveLocation)
             }
-            .navigationTitle("Explore")
-            .navigationBarTitleDisplayMode(.large)
-            .toolbarBackground(Color.bgPrimary, for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
+            .onAppear {
+                // Load shops from Supabase
+                if favoritesManager.allShops.isEmpty {
+                    favoritesManager.fetchShops()
+                }
+            }
+            .navigationBarHidden(true)
             .sheet(isPresented: $showDetail) {
                 if let shop = selectedShop {
                     ShopDetailView(shop: shop, userLocation: locationManager.effectiveLocation)
@@ -160,14 +205,7 @@ struct ExploreView: View {
             }
         }
         .padding(14)
-        .background(
-            RoundedRectangle(cornerRadius: 14)
-                .fill(Color.surface)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 14)
-                        .stroke(Color.white.opacity(0.06), lineWidth: 1)
-                )
-        )
+        .glassCard(cornerRadius: 14, opacity: 0.06, borderOpacity: 0.12)
     }
     
     // MARK: - Filter Chips
@@ -177,7 +215,7 @@ struct ExploreView: View {
             HStack(spacing: 8) {
                 ForEach(FilterOption.allCases, id: \.self) { filter in
                     FilterChip(
-                        title: "\(filter.emoji) \(filter.rawValue)",
+                        title: filter.rawValue,
                         isSelected: selectedFilter == filter
                     ) {
                         withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
@@ -296,22 +334,38 @@ struct ExploreView: View {
 
 struct FilterChip: View {
     let title: String
+    var icon: String? = nil
     let isSelected: Bool
     let action: () -> Void
     
     var body: some View {
         Button(action: action) {
-            Text(title)
-                .font(.system(size: 14, weight: .medium))
-                .foregroundColor(isSelected ? .accentOrange : .textSecondary)
+            HStack(spacing: 5) {
+                if let icon = icon {
+                    Image(systemName: icon)
+                        .font(.system(size: 12, weight: .semibold))
+                }
+                Text(title)
+                    .font(.system(size: 14, weight: .medium))
+            }
+            .foregroundColor(isSelected ? .accentOrange : .textSecondary)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 9)
                 .background(
                     Capsule()
-                        .fill(isSelected ? Color.accentOrange.opacity(0.15) : Color.surface)
+                        .fill(.ultraThinMaterial)
                         .overlay(
                             Capsule()
-                                .stroke(isSelected ? Color.accentOrange : Color.white.opacity(0.06), lineWidth: 1)
+                                .fill(isSelected ? Color.accentOrange.opacity(0.12) : Color.clear)
+                        )
+                        .overlay(
+                            Capsule()
+                                .stroke(
+                                    isSelected ?
+                                    LinearGradient(colors: [Color.accentOrange.opacity(0.5), Color.accentOrange.opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing) :
+                                    LinearGradient(colors: [Color.white.opacity(0.1), Color.white.opacity(0.04)], startPoint: .topLeading, endPoint: .bottomTrailing),
+                                    lineWidth: 1
+                                )
                         )
                 )
                 .shadow(color: isSelected ? .accentGlow : .clear, radius: 8, x: 0, y: 2)
@@ -331,8 +385,8 @@ struct ShopCardView: View {
         HStack(spacing: 0) {
             // Image
             Group {
-                if shop.imageName.hasPrefix("http") {
-                    AsyncImage(url: URL(string: shop.imageName)) { phase in
+                if let imageURL = shop.displayImageURL {
+                    AsyncImage(url: imageURL) { phase in
                         switch phase {
                         case .success(let image):
                             image.resizable().aspectRatio(contentMode: .fill)
@@ -342,9 +396,7 @@ struct ShopCardView: View {
                     }
                     .frame(width: 120, height: 140)
                 } else {
-                    Image(shop.imageName)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
+                    KebabPlaceholderView(name: shop.name)
                         .frame(width: 120, height: 140)
                 }
             }
@@ -358,6 +410,17 @@ struct ShopCardView: View {
                         .padding(.vertical, 4)
                         .background(LinearGradient.kebabGradient)
                         .clipShape(Capsule())
+                        .padding(8)
+                }
+                
+                if shop.isSponsored {
+                    Text("SPONSORED")
+                        .font(.system(size: 8, weight: .black))
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 3)
+                        .background(Color.accentOrange)
+                        .cornerRadius(4)
                         .padding(8)
                 }
             }
@@ -447,15 +510,7 @@ struct ShopCardView: View {
             .padding(10)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.bgCard)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color.white.opacity(0.06), lineWidth: 1)
-                )
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .glassCard(cornerRadius: 16, opacity: 0.06, borderOpacity: 0.12)
     }
 }
 
@@ -477,10 +532,21 @@ struct ServiceBadge: View {
         .padding(.vertical, 3)
         .background(
             Capsule()
-                .fill(Color.openGreen.opacity(0.1))
+                .fill(.ultraThinMaterial)
                 .overlay(
                     Capsule()
-                        .stroke(Color.openGreen.opacity(0.2), lineWidth: 1)
+                        .fill(Color.openGreen.opacity(0.08))
+                )
+                .overlay(
+                    Capsule()
+                        .stroke(
+                            LinearGradient(
+                                colors: [Color.openGreen.opacity(0.25), Color.openGreen.opacity(0.1)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ),
+                            lineWidth: 0.8
+                        )
                 )
         )
     }
@@ -499,11 +565,69 @@ struct TagPill: View {
             .padding(.vertical, 3)
             .background(
                 Capsule()
-                    .fill(Color.accentOrange.opacity(0.08))
+                    .fill(.ultraThinMaterial)
                     .overlay(
                         Capsule()
-                            .stroke(Color.accentOrange.opacity(0.15), lineWidth: 1)
+                            .fill(Color.accentOrange.opacity(0.06))
+                    )
+                    .overlay(
+                        Capsule()
+                            .stroke(
+                                LinearGradient(
+                                    colors: [Color.accentOrange.opacity(0.2), Color.accentOrange.opacity(0.08)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                ),
+                                lineWidth: 0.8
+                            )
                     )
             )
+    }
+}
+
+// MARK: - Ad Placeholder
+
+struct AdPlaceholderView: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text("AD")
+                    .font(.system(size: 10, weight: .bold))
+                    .foregroundColor(.textMuted)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 2)
+                    .background(Color.white.opacity(0.05))
+                    .cornerRadius(4)
+                
+                Spacer()
+            }
+            
+            Text("Try the new Spicy Dürüm at Zahir's?")
+                .font(.system(size: 16, weight: .bold))
+                .foregroundColor(.textPrimary)
+            
+            Text("Limited time offer! Get a free drink with every order.")
+                .font(.system(size: 14))
+                .foregroundColor(.textSecondary)
+            
+            Button {
+                // Ad action
+            } label: {
+                Text("Learn More")
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 10)
+                    .background(Color.accentOrange)
+                    .cornerRadius(10)
+            }
+        }
+        .padding(16)
+        .background(Color.surface)
+        .cornerRadius(16)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(Color.white.opacity(0.06), lineWidth: 1)
+        )
     }
 }

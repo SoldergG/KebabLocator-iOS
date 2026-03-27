@@ -1,5 +1,10 @@
 import SwiftUI
 import MapKit
+import AppTrackingTransparency
+import AdSupport
+#if canImport(GoogleMobileAds)
+import GoogleMobileAds
+#endif
 
 // MARK: - Content View (Main)
 
@@ -9,6 +14,22 @@ struct ContentView: View {
     
     var body: some View {
         mainContent
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+                requestIDFA()
+            }
+    }
+    
+    // MARK: - App Tracking Transparency
+    private func requestIDFA() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            ATTrackingManager.requestTrackingAuthorization { status in
+                // Start AdMob regardless of the result. 
+                // Google Mobile Ads will automatically format ads (personalized vs non-personalized) based on status.
+                #if canImport(GoogleMobileAds)
+                MobileAds.shared.start(completionHandler: nil)
+                #endif
+            }
+        }
     }
     
     private var mainContent: some View {
@@ -33,7 +54,7 @@ struct ContentView: View {
             
             FavoritesView()
                 .tabItem {
-                    Label("Favorites", systemImage: "heart.fill")
+                    Label("Saved", systemImage: "bookmark.fill")
                 }
                 .tag(3)
             
@@ -45,9 +66,15 @@ struct ContentView: View {
         }
         .tint(Color.accentOrange)
         .onAppear {
+            // Liquid Glass tab bar
             let appearance = UITabBarAppearance()
-            appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = UIColor(Color.bgPrimary)
+            appearance.configureWithDefaultBackground()
+            appearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterialDark)
+            appearance.backgroundColor = UIColor(Color.bgPrimary.opacity(0.6))
+            
+            // Subtle top border simulation via shadow
+            appearance.shadowColor = UIColor(Color.white.opacity(0.06))
+            
             UITabBar.appearance().standardAppearance = appearance
             UITabBar.appearance().scrollEdgeAppearance = appearance
         }

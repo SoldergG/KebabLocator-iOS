@@ -18,12 +18,23 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-3758472607555726~1637933842</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>O Kebab Locator precisa da tua localização para encontrar os melhores espaços perto de ti (ex: Oeiras, Cascais, Porto). Precisas de aceitar isto para ver os kebabs na tua zona!</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>O Kebab Locator precisa da tua localização para encontrar os melhores espaços perto de ti (ex: Oeiras, Cascais, Porto). Precisas de aceitar isto para ver os kebabs na tua zona!</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Precisamos do teu consentimento para mostrar anúncios mais relevantes e apoiar o desenvolvimento gratuito da App.</string>
+	<key>SKAdNetworkItems</key>
+	<array>
+		<dict>
+			<key>SKAdNetworkIdentifier</key>
+			<string>cstr6suwn9.skadnetwork</string>
+		</dict>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

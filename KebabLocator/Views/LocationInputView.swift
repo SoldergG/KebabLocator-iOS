@@ -86,6 +86,10 @@ struct LocationInputView: View {
                             )
                         }
                         
+                        // Banner Ad
+                        BannerAd(adUnitID: "ca-app-pub-3940256099942544/2934735716", height: 50)
+                            .padding(.top, 8)
+                        
                         // Divider
                         HStack {
                             Rectangle()
