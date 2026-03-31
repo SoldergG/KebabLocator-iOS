@@ -19,22 +19,17 @@ struct ExploreView: View {
         
         // Apply filter
         switch selectedFilter {
-        case .all:
-            break
-        case .doner:
-            shops = shops.filter { $0.category == .doner }
-        case .falafel:
-            shops = shops.filter { $0.category == .falafel }
-        case .durum:
-            shops = shops.filter { $0.category == .durum }
-        case .shawarma:
-            shops = shops.filter { $0.category == .shawarma }
-        case .lateNight:
-            shops = shops.filter { $0.tags.contains(where: { $0.lowercased().contains("late night") }) }
-        case .topRated:
-            shops = shops.filter { $0.rating >= 4.6 }
-        case .openNow:
-            shops = shops.filter { $0.isOpenNow }
+        case .all:       break
+        case .openNow:   shops = shops.filter { $0.isOpenNow }
+        case .topRated:  shops = shops.filter { $0.rating >= 4.6 }
+        case .doner:     shops = shops.filter { $0.category == .doner }
+        case .falafel:   shops = shops.filter { $0.category == .falafel }
+        case .durum:     shops = shops.filter { $0.category == .durum }
+        case .shawarma:  shops = shops.filter { $0.category == .shawarma }
+        case .lateNight: shops = shops.filter { $0.tags.contains(where: { $0.lowercased().contains("late night") }) }
+        case .delivery:  shops = shops.filter { $0.hasDelivery }
+        case .budget:    shops = shops.filter { $0.price == "€" }
+        case .dineIn:    shops = shops.filter { $0.hasDineIn }
         }
         
         // Apply search

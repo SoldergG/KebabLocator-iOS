@@ -23,11 +23,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>O Kebab Locator precisa da tua localização para encontrar os melhores espaços perto de ti (ex: Oeiras, Cascais, Porto). Precisas de aceitar isto para ver os kebabs na tua zona!</string>
+	<string>Kebab Locator uses your location to find kebab shops and convenience stores near you.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>O Kebab Locator precisa da tua localização para encontrar os melhores espaços perto de ti (ex: Oeiras, Cascais, Porto). Precisas de aceitar isto para ver os kebabs na tua zona!</string>
+	<string>Kebab Locator uses your location to find kebab shops and convenience stores near you.</string>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>Precisamos do teu consentimento para mostrar anúncios mais relevantes e apoiar o desenvolvimento gratuito da App.</string>
+	<string>We use this to show relevant ads and support free development of the app. You can opt out anytime in Settings.</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
@@ -44,14 +44,13 @@
 	<dict/>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
-		<string>armv7</string>
+		<string>arm64</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>

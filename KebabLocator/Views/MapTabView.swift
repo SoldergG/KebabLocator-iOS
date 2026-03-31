@@ -16,11 +16,22 @@ struct MapTabView: View {
             span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03)
         )
     )
-    
+    @State private var visibleRegion: MKCoordinateRegion?
+
     private var allShops: [KebabShop] {
         let live = Array(locationManager.liveShops)
         let saved = Array(favoritesManager.allShops)
         return live + saved
+    }
+
+    private var visibleShops: [KebabShop] {
+        guard let region = visibleRegion else { return allShops }
+        let latBuffer = region.span.latitudeDelta * 0.75
+        let lonBuffer = region.span.longitudeDelta * 0.75
+        return allShops.filter {
+            abs($0.coordinate.latitude  - region.center.latitude)  <= latBuffer &&
+            abs($0.coordinate.longitude - region.center.longitude) <= lonBuffer
+        }
     }
     
     var body: some View {
@@ -43,8 +54,8 @@ struct MapTabView: View {
                     }
                 }
                 
-                // Kebab shop markers
-                ForEach(allShops) { shop in
+                // Kebab shop markers (only visible region for performance)
+                ForEach(visibleShops) { shop in
                     Annotation(shop.name, coordinate: shop.coordinate) {
                         KebabMarker(
                             shop: shop,
@@ -57,6 +68,7 @@ struct MapTabView: View {
             .mapStyle(.standard(elevation: .flat, pointsOfInterest: .excludingAll))
             .colorScheme(.dark)
             .ignoresSafeArea(edges: [.bottom])
+            .onMapCameraChange { context in visibleRegion = context.region }
             .navigationTitle("Map")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.bgPrimary, for: .navigationBar)

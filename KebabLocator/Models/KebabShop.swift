@@ -174,25 +174,31 @@ enum KebabCategory: String, CaseIterable, Codable {
 }
 
 enum FilterOption: String, CaseIterable {
-    case all = "All"
-    case doner = "Döner"
-    case falafel = "Falafel"
-    case durum = "Dürüm"
+    case all      = "All"
+    case openNow  = "Open Now"
+    case topRated = "Top Rated"
+    case doner    = "Döner"
+    case falafel  = "Falafel"
+    case durum    = "Dürüm"
     case shawarma = "Shawarma"
     case lateNight = "Late Night"
-    case topRated = "Top Rated"
-    case openNow = "Open Now"
-    
+    case delivery = "Delivery"
+    case budget   = "Budget"
+    case dineIn   = "Dine-In"
+
     var icon: String {
         switch self {
-        case .all: return "flame.fill"
-        case .doner: return "fork.knife"
-        case .falafel: return "leaf.fill"
-        case .durum: return "burrito"
-        case .shawarma: return "takeoutbag.and.cup.and.straw.fill"
+        case .all:       return "flame.fill"
+        case .openNow:   return "clock.fill"
+        case .topRated:  return "star.fill"
+        case .doner:     return "fork.knife"
+        case .falafel:   return "leaf.fill"
+        case .durum:     return "scroll.fill"
+        case .shawarma:  return "takeoutbag.and.cup.and.straw.fill"
         case .lateNight: return "moon.fill"
-        case .topRated: return "star.fill"
-        case .openNow: return "clock.fill"
+        case .delivery:  return "bicycle"
+        case .budget:    return "eurosign.circle.fill"
+        case .dineIn:    return "chair.lounge.fill"
         }
     }
 }

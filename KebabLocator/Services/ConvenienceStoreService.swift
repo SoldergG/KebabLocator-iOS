@@ -10,21 +10,19 @@ class ConvenienceStoreService {
     private init() {}
     
     // MARK: - Search Convenience Stores
-    func searchConvenienceStores(near location: CLLocation, radius: Double = 2000, completion: @escaping ([KebabShop]) -> Void) {
+    func searchConvenienceStores(near location: CLLocation, radius: Double = 3000, completion: @escaping ([KebabShop]) -> Void) {
         let lat = location.coordinate.latitude
         let lon = location.coordinate.longitude
-        
-        // Overpass API query for convenience stores, supermarkets, and kiosks
+
         let query = """
-        [out:json][timeout:25];
+        [out:json][timeout:30];
         (
-          node["shop"="convenience"](around:\(radius),\(lat),\(lon));
-          node["shop"="kiosk"](around:\(radius),\(lat),\(lon));
+          node["shop"~"^(convenience|kiosk|supermarket|grocery|general|newsagent|greengrocer|deli|mini_supermarket)$"](around:\(radius),\(lat),\(lon));
+          way["shop"~"^(convenience|kiosk|supermarket|grocery|general|newsagent|mini_supermarket)$"](around:\(radius),\(lat),\(lon));
           node["amenity"="vending_machine"]["vending"~"food|drinks"](around:\(radius),\(lat),\(lon));
-          way["shop"="convenience"](around:\(radius),\(lat),\(lon));
-          way["shop"="kiosk"](around:\(radius),\(lat),\(lon));
+          node["name"~"[Mm]ini.?[Mm]ercado|[Mm]ini.?[Mm]arket|[Mm]ercadinha|[Ll]idl|[Aa]ldi|[Ss]par|[Pp]ingo"][shop](around:\(radius),\(lat),\(lon));
         );
-        out center tags 50;
+        out center tags 80;
         """
         
         guard let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),

@@ -8,6 +8,8 @@ struct LocationInputView: View {
     @State private var addressText = ""
     @State private var showError = false
     @State private var errorMessage = ""
+    @State private var showSettings = false
+    @StateObject private var appSettings = AppSettings()
     @FocusState private var isSearchFocused: Bool
     
     var body: some View {
@@ -244,6 +246,21 @@ struct LocationInputView: View {
             .navigationBarTitleDisplayMode(.large)
             .toolbarBackground(Color.bgPrimary, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button { showSettings = true } label: {
+                        Image(systemName: "gearshape.fill")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.textSecondary)
+                    }
+                    .accessibilityLabel("Settings")
+                }
+            }
+            .sheet(isPresented: $showSettings) {
+                AppSettingsView()
+                    .environmentObject(appSettings)
+                    .environmentObject(locationManager)
+            }
             .alert("Location Error", isPresented: $showError) {
                 Button("OK") { }
             } message: {

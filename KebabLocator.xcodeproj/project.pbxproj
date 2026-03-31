@@ -32,6 +32,8 @@
 		GLASS123 /* GlassModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = GLASSREF /* GlassModifiers.swift */; };
 		REPORT123 /* ReportPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = REPORTREF /* ReportPlaceView.swift */; };
 		SUBMIT456 /* SubmitVerificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = SUBMITREF /* SubmitVerificationView.swift */; };
+		APPSETTINGS123 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPSETTINGSREF /* AppSettings.swift */; };
+		APPSETTINGSVIEW123 /* AppSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPSETTINGSVIEWREF /* AppSettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +63,8 @@
 		GLASSREF /* GlassModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassModifiers.swift; sourceTree = "<group>"; };
 		REPORTREF /* ReportPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportPlaceView.swift; sourceTree = "<group>"; };
 		SUBMITREF /* SubmitVerificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitVerificationView.swift; sourceTree = "<group>"; };
+		APPSETTINGSREF /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		APPSETTINGSVIEWREF /* AppSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +117,7 @@
 				SUBMITREF /* SubmitVerificationView.swift */,
 				ADDKEBABREF /* AddKebabView.swift */,
 				BANNERREF /* BannerAdView.swift */,
+				APPSETTINGSVIEWREF /* AppSettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -121,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				2B6E20FC9BB16AFF5725E5C0 /* KebabShop.swift */,
+				APPSETTINGSREF /* AppSettings.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -248,6 +254,8 @@
 				ADDKEBAB123 /* AddKebabView.swift in Sources */,
 				CONVENIENCE123 /* ConvenienceStoreService.swift in Sources */,
 				BANNER789 /* BannerAdView.swift in Sources */,
+				APPSETTINGS123 /* AppSettings.swift in Sources */,
+				APPSETTINGSVIEW123 /* AppSettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
