@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   LastUpgradeVersion = "1500"
+   version = "1.7">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "7ED5EC053BD782372280ED97"
+               BuildableName = "KebabLocator.app"
+               BlueprintName = "KebabLocator"
+               ReferencedContainer = "container:KebabLocator.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <TestAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "YES">
+      <Testables>
+      </Testables>
+   </TestAction>
+   <LaunchAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "NO"
+      ignoresPersistentStateOnLaunch = "NO"
+      debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
+      allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "7ED5EC053BD782372280ED97"
+            BuildableName = "KebabLocator.app"
+            BlueprintName = "KebabLocator"
+            ReferencedContainer = "container:KebabLocator.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </LaunchAction>
+   <ProfileAction
+      buildConfiguration = "Release"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "7ED5EC053BD782372280ED97"
+            BuildableName = "KebabLocator.app"
+            BlueprintName = "KebabLocator"
+            ReferencedContainer = "container:KebabLocator.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </ProfileAction>
+   <AnalyzeAction
+      buildConfiguration = "Debug">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Release"
+      revealArchiveInOrganizer = "YES">
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Download GoogleMobileAds dSYMs"
+               scriptText = "#!/bin/sh&#10;# Download GoogleMobileAds + UserMessagingPlatform dSYMs&#10;# Fixes: &quot;Upload Symbols Failed&quot; during App Store validation&#10;TEMP=$(mktemp -d)&#10;echo &quot;Downloading GoogleMobileAds dSYMs...&quot;&#10;curl -sL &quot;https://dl.google.com/googleadmobadssdk/googlemobileadssdkios.zip&quot; -o &quot;$TEMP/gads.zip&quot; || { echo &quot;Download failed - skipping&quot;; exit 0; }&#10;unzip -q &quot;$TEMP/gads.zip&quot; -d &quot;$TEMP/out&quot;&#10;find &quot;$TEMP/out&quot; -name &quot;*.dSYM&quot; | while read D; do&#10;  echo &quot;Copying $(basename $D)&quot;&#10;  cp -rf &quot;$D&quot; &quot;$ARCHIVE_PATH/dSYMs/&quot;&#10;done&#10;rm -rf &quot;$TEMP&quot;&#10;echo &quot;dSYM copy done.&quot;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "7ED5EC053BD782372280ED97"
+                     BuildableName = "KebabLocator.app"
+                     BlueprintName = "KebabLocator"
+                     ReferencedContainer = "container:KebabLocator.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PostActions>
+   </ArchiveAction>
+</Scheme>
