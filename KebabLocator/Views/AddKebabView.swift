@@ -120,7 +120,7 @@ struct AddKebabView: View {
                             }
                             
                             // Ad Banner (Large)
-                            BannerAd(adUnitID: "ca-app-pub-3940256099942544/2934735716", height: 250)
+                            BannerAd(adUnitID: "ca-app-pub-3553204385387394/7775057626", height: 250)
                                 .padding(.top, 16)
                         }
                         .padding(.horizontal, 20)

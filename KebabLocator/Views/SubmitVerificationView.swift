@@ -43,7 +43,7 @@ struct SubmitVerificationView: View {
                         submitButton
                         
                         // Banner Ad
-                        BannerAd(adUnitID: "ca-app-pub-3940256099942544/2934735716", height: 50)
+                        BannerAd(adUnitID: "ca-app-pub-3553204385387394/6461975954", height: 50)
                             .padding(.top, 8)
                         
                         Spacer(minLength: 40)
