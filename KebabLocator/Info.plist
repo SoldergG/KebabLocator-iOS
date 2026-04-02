@@ -20,6 +20,8 @@
 	<string>1</string>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-3553204385387394~6392024896</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
