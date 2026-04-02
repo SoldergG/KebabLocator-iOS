@@ -97,7 +97,7 @@ struct HomeView: View {
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(alignment: .leading, spacing: 28) {
                             // Ad Banner
-                            BannerAd(adUnitID: "ca-app-pub-3940256099942544/2934735716", height: 50)
+                            BannerAd(adUnitID: "ca-app-pub-3553204385387394/6394127963", height: 50)
                                 .padding(.horizontal, 16)
                             
                             // Top Picks horizontally scrollable

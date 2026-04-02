@@ -90,7 +90,7 @@ struct FavoritesView: View {
                             sortBar
                             
                             // Ad Banner
-                            BannerAd(adUnitID: "ca-app-pub-3940256099942544/2934735716", height: 60)
+                            BannerAd(adUnitID: "ca-app-pub-3553204385387394/3793781714", height: 60)
                                 .glassCard(cornerRadius: 12, opacity: 0.04, borderOpacity: 0.08)
                             
                             // Saved Shop Cards

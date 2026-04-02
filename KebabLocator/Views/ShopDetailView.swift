@@ -174,7 +174,7 @@ struct ShopDetailView: View {
                         actionButtons
                         
                         // Banner Ad
-                        BannerAd(adUnitID: "ca-app-pub-3940256099942544/6300978111", height: 50)
+                        BannerAd(adUnitID: "ca-app-pub-3553204385387394/2480700040", height: 50)
                             .padding(.top, 16)
                             
                         Spacer(minLength: 40)

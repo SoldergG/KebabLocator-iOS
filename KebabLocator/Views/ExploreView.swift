@@ -117,7 +117,7 @@ struct ExploreView: View {
                             .padding(.bottom, 12)
                         
                         // Ad Banner
-                        BannerAd(adUnitID: "ca-app-pub-3940256099942544/1712485313", height: 50)
+                        BannerAd(adUnitID: "ca-app-pub-3553204385387394/5081046298", height: 50)
                             .padding(.horizontal, 16)
                         
                         // Shop Cards

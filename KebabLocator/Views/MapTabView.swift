@@ -78,7 +78,7 @@ struct MapTabView: View {
             .overlay(alignment: .top) {
                 // Ad Banner at top
                 VStack(spacing: 0) {
-                    BannerAd(adUnitID: "ca-app-pub-3940256099942544/2934735716", height: 50)
+                    BannerAd(adUnitID: "ca-app-pub-3553204385387394/3959536314", height: 50)
                         .frame(height: 50)
                     
                     // Top gradient overlay
