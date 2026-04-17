@@ -64,3 +64,12 @@ When testing with real Ad Unit IDs, never click on your own ads. To test safely,
 
 🛡️ App Store Approval
 You can and should put the real IDs before sending the app for approval. Apple's reviewers will see the ads (or placeholders if they are not yet filled by Google) as part of the normal app review process.
+
+
+---
+
+<div align="center">
+
+**Built by [Lucas Solderg](https://soldergg.github.io)** · iOS & Mobile Developer from Portugal
+
+</div>
