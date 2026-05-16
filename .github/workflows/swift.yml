@@ -1,7 +1,4 @@
-# This workflow will build a Swift project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
-
-name: Swift
+name: CI
 
 on:
   push:
@@ -10,13 +7,53 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-
+  # ─── iOS build ──────────────────────────────────────────────────────────────
+  ios-build:
+    name: iOS Build
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build
-      run: swift build -v
-    - name: Run tests
-      run: swift test -v
+      - uses: actions/checkout@v4
+
+      - name: Resolve Swift Package dependencies
+        run: |
+          xcodebuild \
+            -resolvePackageDependencies \
+            -project KebabLocator.xcodeproj \
+            -scheme KebabLocator
+
+      - name: Build for iOS Simulator
+        run: |
+          xcodebuild \
+            -project KebabLocator.xcodeproj \
+            -scheme KebabLocator \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+  # ─── Landing page build ─────────────────────────────────────────────────────
+  landing-build:
+    name: Landing Page Build
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: landing
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: landing/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js app
+        run: npm run build

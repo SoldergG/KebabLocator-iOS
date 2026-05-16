@@ -1,0 +1,20 @@
+# iOS
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+DerivedData/
+build/
+*.ipa
+Pods/
+
+# Next.js / Node
+landing/node_modules/
+landing/.next/
+landing/out/
+landing/.env.local
+landing/.env*.local
+landing/.vercel
+
+# General
+.DS_Store
+*.swp
+*.swo
