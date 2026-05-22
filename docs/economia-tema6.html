@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Teste de Avaliação — Tema 6</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0f1419;--paper:#f7f3ec;--paper2:#efe8db;
+  --red:#c8341d;--blue:#2b6ca3;--green:#2e7d46;--gold:#d8a82b;--muted:#6b6357;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6}
+
+/* HEADER */
+.header{padding:2rem 1.5rem 1.5rem;border-bottom:3px solid var(--ink);background:#fff}
+.header .badge{display:inline-block;background:var(--red);color:#fff;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.15em;padding:.3rem .7rem;margin-bottom:.8rem}
+.header h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.6rem);line-height:1;letter-spacing:-.02em;margin-bottom:.4rem}
+.header h1 em{font-style:italic;color:var(--red);font-weight:400}
+.header p{font-family:'Fraunces',serif;font-style:italic;color:var(--muted);font-size:1rem}
+
+/* BARRA STICKY */
+.bar{
+  position:sticky;top:0;z-index:100;
+  background:var(--ink);color:#fff;
+  padding:.65rem 1.2rem;
+  display:flex;align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap;
+}
+.bar-stats{display:flex;gap:1.2rem;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em}
+.bar-stats b{color:var(--gold);font-size:.95rem}
+.bar-btns{display:flex;gap:.4rem;flex-wrap:wrap}
+.bar-btns button{
+  background:transparent;color:#fff;border:1px solid #fff;
+  padding:.35rem .75rem;font-family:'JetBrains Mono',monospace;font-size:.68rem;
+  text-transform:uppercase;letter-spacing:.08em;cursor:pointer;border-radius:2px;
+  transition:all .15s;
+}
+.bar-btns button:hover{background:#fff;color:var(--ink)}
+.bar-btns .btn-reset{background:var(--red);border-color:var(--red)}
+.bar-btns .btn-reset:hover{background:#fff;color:var(--red)}
+
+/* PROGRESS */
+.prog{height:3px;background:#333}
+.prog-fill{height:100%;background:var(--gold);width:0;transition:width .3s}
+
+/* MAIN */
+main{max-width:860px;margin:0 auto;padding:2rem 1.2rem 5rem}
+
+/* GRUPO */
+.grupo{margin-bottom:.5rem}
+.grupo-title{
+  font-family:'JetBrains Mono',monospace;font-size:.72rem;text-transform:uppercase;
+  letter-spacing:.15em;color:#fff;background:var(--red);
+  display:inline-block;padding:.3rem .8rem;margin-bottom:1rem;border-radius:2px;
+}
+
+/* QUESTÃO */
+.card{
+  background:#fff;border:1px solid #d0cbc3;border-radius:4px;
+  box-shadow:2px 2px 0 var(--ink);margin-bottom:1.2rem;overflow:hidden;
+}
+.card-head{
+  display:flex;align-items:baseline;gap:.8rem;padding:1rem 1.2rem .5rem;
+  border-bottom:1px solid #eee;
+}
+.card-num{font-family:'Fraunces',serif;font-weight:900;font-size:1.8rem;color:var(--red);line-height:1;flex-shrink:0}
+.card-body{padding:.8rem 1.2rem 1rem}
+.card-body p{font-size:.95rem;margin-bottom:.7rem}
+.card-body strong{font-weight:600}
+.card-body em{font-style:italic}
+
+/* TABELA */
+.qtbl{overflow-x:auto;margin:.6rem 0}
+.qtbl table{border-collapse:collapse;font-size:.85rem;width:100%;background:#fff;border:1px solid #ccc}
+.qtbl th{background:var(--ink);color:#fff;padding:.45rem .7rem;text-align:left;font-weight:600;font-size:.75rem}
+.qtbl td{padding:.45rem .7rem;border-top:1px solid #ddd}
+.qtbl tr:nth-child(even) td{background:var(--paper2)}
+
+/* GRÁFICO SVG */
+.svg-wrap{display:flex;justify-content:center;margin:.8rem 0}
+.svg-wrap svg{max-width:100%;border:1px solid #ddd;background:#fff;border-radius:3px;padding:6px}
+
+/* CONTEXTO */
+.ctx{background:var(--paper2);border-left:3px solid var(--blue);padding:.6rem .9rem;font-size:.9rem;margin:.5rem 0;border-radius:0 3px 3px 0}
+
+/* OPÇÕES */
+.opts{display:flex;flex-direction:column;gap:.45rem;margin-top:.8rem}
+.opt{
+  display:flex;align-items:flex-start;gap:.7rem;padding:.6rem .9rem;
+  border:1.5px solid #d0cbc3;border-radius:3px;cursor:pointer;font-size:.92rem;
+  transition:border-color .12s,background .12s;background:#fff;
+}
+.opt:hover:not(.locked){border-color:var(--ink);background:var(--paper2)}
+.opt .ltr{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--red);flex-shrink:0;width:1.2rem}
+.opt.sel{border-color:var(--blue);background:#ddeaf7}
+.opt.correct{border-color:var(--green)!important;background:#d6eedd!important}
+.opt.correct .ltr{color:var(--green)!important}
+.opt.wrong{border-color:#c0392b!important;background:#fce0dd!important}
+.opt.wrong .ltr{color:#c0392b!important}
+.opt.show-ans{border-color:var(--green)!important;border-width:2px!important;background:#d6eedd!important}
+.opt.show-ans .ltr{color:var(--green)!important}
+.opt.locked{cursor:default}
+
+/* FEEDBACK */
+.fb{display:none;margin-top:.7rem;padding:.6rem .9rem;border-radius:3px;font-size:.88rem;line-height:1.5}
+.fb.show{display:block}
+.fb.ok{background:#d6eedd;border-left:3px solid var(--green);color:#1a4d2a}
+.fb.err{background:#fce0dd;border-left:3px solid #c0392b;color:#6b1a10}
+.fb strong{display:block;margin-bottom:.2rem;font-size:.95rem}
+
+/* TEXTO ABERTO */
+.open-q{
+  background:var(--paper2);border:1px dashed var(--ink);border-radius:3px;
+  padding:1rem 1.2rem;margin-bottom:1.2rem;
+}
+.open-q .oq-num{font-family:'JetBrains Mono',monospace;color:var(--red);font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem}
+.open-q p{font-size:.92rem;margin-bottom:.5rem}
+.open-q .pontos{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted);margin-top:.5rem}
+.open-q textarea{
+  width:100%;margin-top:.6rem;padding:.5rem .7rem;border:1px solid #ccc;
+  border-radius:3px;font-family:'Inter',sans-serif;font-size:.88rem;line-height:1.5;
+  min-height:80px;resize:vertical;
+}
+.modelo{
+  display:none;margin-top:.8rem;background:#d6eedd;border-left:3px solid var(--green);
+  border-radius:0 3px 3px 0;padding:.8rem 1rem;font-size:.88rem;line-height:1.6;
+}
+.modelo.show{display:block}
+.modelo strong{display:block;color:var(--green);font-family:'JetBrains Mono',monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem}
+
+/* SCORE FINAL */
+.score{
+  display:none;background:var(--ink);color:#fff;padding:2rem 1.5rem;
+  border-radius:4px;text-align:center;margin:1.5rem 0;
+}
+.score.show{display:block}
+.score h2{font-family:'Fraunces',serif;font-size:1.8rem;margin-bottom:.3rem}
+.score .big{font-family:'Fraunces',serif;font-weight:900;font-size:4.5rem;color:var(--gold);line-height:1;margin:.6rem 0}
+.score .lbl{font-family:'JetBrains Mono',monospace;font-size:.8rem;text-transform:uppercase;letter-spacing:.15em;color:#aaa}
+.score .msg{font-family:'Fraunces',serif;font-style:italic;color:#ccc;max-width:50ch;margin:.8rem auto 0}
+
+/* COTAÇÕES */
+.cotacoes{background:#fff;border:1px solid #d0cbc3;border-radius:4px;padding:1rem 1.2rem;margin-bottom:1.5rem}
+.cotacoes h3{font-family:'Fraunces',serif;font-size:1.1rem;margin-bottom:.7rem;color:var(--red)}
+.cotacoes table{border-collapse:collapse;font-size:.85rem;width:100%}
+.cotacoes th{text-align:left;font-weight:700;font-size:.72rem;text-transform:uppercase;padding:.3rem .6rem;border-bottom:2px solid var(--ink)}
+.cotacoes td{padding:.3rem .6rem;border-bottom:1px solid #eee}
+.cotacoes .total td{font-weight:700;border-top:2px solid var(--ink)}
+
+@media(max-width:600px){
+  .bar-stats{gap:.7rem;font-size:.65rem}
+  .card-num{font-size:1.4rem}
+  .opt{font-size:.85rem}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="badge">Manual Texto · Economia A · 10.º ano</span>
+  <h1>Teste de Avaliação — <em>Tema 6</em></h1>
+  <p>Grupo I (escolha múltipla) · Grupo II (resposta aberta) · Grupo III (análise de documentos)</p>
+</div>
+
+<div class="bar" id="bar">
+  <div class="bar-stats">
+    <div>Respondidas <b id="sAns">0</b>/<b id="sTotal">0</b></div>
+    <div>Certas <b id="sOk">0</b></div>
+    <div>Erradas <b id="sErr">0</b></div>
+    <div>% <b id="sPct">—</b></div>
+  </div>
+  <div class="bar-btns">
+    <button id="btnReveal">Ver respostas</button>
+    <button class="btn-reset" id="btnReset">↺ Reiniciar</button>
+  </div>
+</div>
+<div class="prog"><div class="prog-fill" id="progFill"></div></div>
+
+<main>
+
+<!-- COTAÇÕES -->
+<div class="cotacoes">
+  <h3>Cotações</h3>
+  <table>
+    <thead><tr><th>Grupo</th><th>Questão</th><th>Pontos</th></tr></thead>
+    <tbody>
+      <tr><td>Grupo I</td><td>Q1–Q16 (×6 cada)</td><td>96 pontos</td></tr>
+      <tr><td>Grupo II</td><td>1.</td><td>12 pontos</td></tr>
+      <tr><td></td><td>2.1</td><td>12 pontos</td></tr>
+      <tr><td></td><td>2.2</td><td>18 pontos</td></tr>
+      <tr><td></td><td>2.3</td><td>6 pontos</td></tr>
+      <tr><td>Grupo III</td><td>1.1</td><td>10 pontos</td></tr>
+      <tr><td></td><td>1.2</td><td>8 pontos</td></tr>
+      <tr><td></td><td>1.3</td><td>16 pontos</td></tr>
+      <tr><td></td><td>1.4</td><td>22 pontos</td></tr>
+      <tr class="total"><td colspan="2">TOTAL</td><td>200 pontos</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ======== GRUPO I ======== -->
+<div class="grupo">
+  <div class="grupo-title">Grupo I — Escolha Múltipla (16 questões × 6 pontos = 96 pontos)</div>
+
+  <!-- Q1 -->
+  <div class="card" id="c0">
+    <div class="card-head"><span class="card-num">1</span><p style="font-size:.9rem">A Fig. 1 mostra o peso das remunerações dos fatores trabalho (60%) e capital (40%) no Rendimento Nacional.</p></div>
+    <div class="card-body">
+      <div class="svg-wrap">
+        <svg viewBox="0 0 220 160" width="240" height="170">
+          <circle cx="100" cy="82" r="60" fill="#e8b8b2"/>
+          <path d="M100 82 L100 22 A60 60 0 0 1 152 112 Z" fill="#2b6ca3"/>
+          <text x="68" y="75" font-family="Inter,sans-serif" font-size="14" font-weight="700" fill="#333">40%</text>
+          <text x="108" y="95" font-family="Inter,sans-serif" font-size="14" font-weight="700" fill="#fff">60%</text>
+          <rect x="145" y="50" width="10" height="10" fill="#e8b8b2" stroke="#333"/>
+          <text x="158" y="59" font-family="Inter,sans-serif" font-size="10" fill="#333">Capital</text>
+          <rect x="145" y="68" width="10" height="10" fill="#2b6ca3"/>
+          <text x="158" y="77" font-family="Inter,sans-serif" font-size="10" fill="#333">Trabalho</text>
+        </svg>
+      </div>
+      <p>Pode afirmar-se que a Fig. 1 evidencia</p>
+      <div class="opts" data-q="0" data-ans="2">
+        <div class="opt" data-i="0"><span class="ltr">A</span><span>a distribuição pessoal dos rendimentos.</span></div>
+        <div class="opt" data-i="1"><span class="ltr">B</span><span>a redistribuição dos rendimentos.</span></div>
+        <div class="opt" data-i="2"><span class="ltr">C</span><span>a distribuição funcional dos rendimentos.</span></div>
+        <div class="opt" data-i="3"><span class="ltr">D</span><span>a distribuição dos rendimentos pelos salários e lucros.</span></div>
+      </div>
+      <div class="fb" id="fb0"></div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="card" id="c1">
+    <div class="card-head"><span class="card-num">2</span></div>
+    <div class="card-body">
+      <p>Os rendimentos primários são constituídos pelos</p>
+      <div class="opts" data-q="1" data-ans="1">
+        <div class="opt" data-i="0"><span class="ltr">A</span><span>salários, rendas, lucros e subsídios de desemprego.</span></div>
+        <div class="opt" data-i="1"><span class="ltr">B</span><span>salários, rendas, juros e lucros.</span></div>
+        <div class="opt" data-i="2"><span class="ltr">C</span><span>salários, vencimentos dos funcionários públicos e juros.</span></div>
+        <div class="opt" data-i="3"><span class="ltr">D</span><span>salários, transferências sociais, juros e lucros.</span></div>
+      </div>
+      <div class="fb" id="fb1"></div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="card" id="c2">
+    <div class="card-head"><span class="card-num">3</span></div>
+    <div class="card-body">
+      <div class="qtbl"><table>
+        <thead><tr><th>Rendimento nacional</th><th>230 000 M€</th></tr></thead>
+        <tbody><tr><td>Fator trabalho</td><td>126 500 M€</td></tr></tbody>
+      </table></div>
+      <p>Com base no Quadro 1, pode afirmar-se que</p>
+      <div class="opts" data-q="2" data-ans="1">
+        <div class="opt" data-i="0"><span class="ltr">A</span><span>o peso do fator trabalho no rendimento nacional foi 126 500 milhões de euros.</span></div>
+        <div class="opt" data-i="1"><span class="ltr">B</span><span>o peso do fator trabalho no rendimento nacional foi 55%.</span></div>
+        <div class="opt" data-i="2"><span class="ltr">C</span><span>o peso do fator capital no rendimento nacional foi 103 500 milhões de euros.</span></div>
+        <div class="opt" data-i="3"><span class="ltr">D</span><span>o peso do fator capital no rendimento nacional foi 45%.</span></div>
+      </div>
+      <div class="fb" id="fb2"></div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="card" id="c3">
+    <div class="card-head"><span class="card-num">4</span></div>
+    <div class="card-body">
+      <p>Num determinado país, verificou-se uma descida do salário real médio dos trabalhadores. Pode concluir-se que se verificou uma das situações seguintes:</p>
+      <div class="opts" data-q="3" data-ans="2">
+        <div class="opt" data-i="0"><span class="ltr">A</span><span>o salário nominal reduziu-se necessariamente.</span></div>
+        <div class="opt" data-i="1"><span class="ltr">B</span><span>o poder de compra dos trabalhadores aumentou.</span></div>
+        <div class="opt" data-i="2"><span class="ltr">C</span><span>o salário nominal aumentou menos do que o IPC.</span></div>
+        <div class="opt" data-i="3"><span class="ltr">D</span><span>o IPC aumentou menos do que o salário nominal.</span></div>
+      </div>
+      <div class="fb" id="fb3"></div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="card" id="c4">
+    <div class="card-head"><span class="card-num">5</span></div>
+    <div class="card-body">
+      <p>O rendimento nacional <em>per capita</em> permite conhecer</p>
+      <div class="opts" data-q="4" data-ans="3">
+        <div class="opt" data-i="0"><span class="ltr">A</span><span>o valor do salário médio de um país.</span></div>
+        <div class="opt" data-i="1"><span class="ltr">B</span><span>o rendimento disponível das famílias.</span></div>
+        <div class="opt" data-i="2"><span class="ltr">C</span><span>o valor do salário real dos trabalhadores.</span></div>
+        <div class="opt" data-i="3"><span class="ltr">D</span><span>o rendimento médio de cada habitante.</span></div>
+      </div>
+      <div class="fb" id="fb4"></div>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="card" id="c5">
+    <div class="card-head"><span class="card-num">6</span></div>
+    <div class="card-body">
+      <p><em>O rendimento nacional per capita permite estabelecer comparações com outros países, mas não reflete a distribuição dos rendimentos de um país.</em></p>
+      <p>Esta afirmação é</p>
+      <div class="opts" data-q="5" data-ans="2">
+        <div class="opt" data-i="0"><span class="ltr">A</span><span>falsa, porque este indicador permite analisar a distribuição dos rendimentos dentro de um país.</span></div>
+        <div class="opt" data-i="1"><span class="ltr">B</span><span>falsa, porque, ao encobrir o grau de desigualdade social existente dentro de um mesmo país, não permite estabelecer comparações com outros países.</span></div>
+        <div class="opt" data-i="2"><span class="ltr">C</span><span>verdadeira, porque este indicador, ao ser um valor médio, atribui a cada um dos habitantes o mesmo rendimento.</span></div>
+        <div class="opt" data-i="3"><span class="ltr">D</span><span>verdadeira, porque este indicador permite medir outras dimensões da realidade social de um país, possibilitando estabelecer comparações com outros países.</span></div>
+      </div>
+      <div class="fb" id="fb5"></div>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="card" id="c6">
+    <div class="card-head"><span class="card-num">7</span><p style="font-size:.88rem">A Fig. 2 apresenta curvas de Lorenz do país A e do país B.</p></div>
+    <div class="card-body">
+      <div class="svg-wrap">
+        <svg viewBox="0 0 280 220" width="300" height="230">
+          <line x1="40" y1="190" x2="260" y2="190" stroke="#333" stroke-width="1.5"/>
+          <line x1="40" y1="20" x2="40" y2="190" stroke="#333" stroke-width="1.5"/>
+          <line x1="40" y1="190" x2="260" y2="20" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+          <polyline points="40,190 62,180 84,162 106,143 128,122 150,100 172,80 194,60 216,40 238,24 260,20" stroke="#2b6ca3" stroke-width="2.5" fill="none"/>
+          <polyline points="40,190 62,186 84,181 106,174 128,163 150,148 172,127 194,100 216,65 238,32 260,20" stroke="#c8341d" stroke-width="2.5" fill="none" stroke-dasharray="5,3"/>
+          <circle cx="84" cy="181" r="3" fill="#c8341d"/>
+          <text x="87" y="179" font-size="9" fill="#c8341d">7%</text>
+          <circle cx="84" cy="162" r="3" fill="#2b6ca3"/>
+          <text x="87" y="160" font-size="9" fill="#2b6ca3">20%</text>
+          <circle cx="150" cy="148" r="3" fill="#c8341d"/>
+          <text x="153" y="146" font-size="9" fill="#c8341d">15%</text>
+          <circle cx="150" cy="100" r="3" fill="#2b6ca3"/>
+          <text x="153" y="98" font-size="9" fill="#2b6ca3">38%</text>
+          <circle cx="194" cy="100" r="3" fill="#c8341d"/>
+          <text x="197" y="98" font-size="9" fill="#c8341d">30%</text>
+          <circle cx="194" cy="60" r="3" fill="#2b6ca3"/>
+          <text x="197" y="58" font-size="9" fill="#2b6ca3">60%</text>
+          <circle cx="238" cy="32" r="3" fill="#c8341d"/>
+          <text x="215" y="28" font-size="9" fill="#c8341d">60%</text>
+          <circle cx="238" cy="24" r="3" fill="#2b6ca3"/>
+          <text x="241" y="20" font-size="9" fill="#2b6ca3">85%</text>
+          <line x1="155" y1="190" x2="175" y2="190" stroke="#2b6ca3" stroke-width="2"/>
+          <text x="177" y="193" font-size="10" fill="#2b6ca3">País A</text>
+          <line x1="155" y1="202" x2="175" y2="202" stroke="#c8341d" stroke-width="2" stroke-dasharray="4,2"/>
+          <text x="177" y="205" font-size="10" fill="#c8341d">País B</text>
+          <text x="130" y="215" font-size="9" fill="#555">% População</text>
+        </svg>
+      </div>
+      <p>Pode concluir-se, com base na Fig. 2, que</p>
+      <div class="opts" data-q="6" data-ans="1">
+        <div class="opt" data-i="0"><span class="ltr">A</span><span>no país A, 30% da população recebeu 7% dos rendimentos.</span></div>
+        <div class="opt" data-i="1"><span class="ltr">B</span><span>no país B, 70% da população recebeu 60% dos rendimentos.</span></div>
+        <div class="opt" data-i="2"><span class="ltr">C</span><span>no país A, 10% da população com menores rendimentos recebeu 15% dos rendimentos.</span></div>
+        <div class="opt" data-i="3"><span class="ltr">D</span><span>no país B, 10% da população com maiores rendimentos recebeu 40% dos rendimentos.</span></div>
+      </div>
+      <div class="fb" id="fb6"></div>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="card" id="c7">
+    <div class="card-head"><span class="card-num">8</span></div>
+    <div class="card-body">
+      <div class="qtbl"><table>
+        <thead><tr><th>Anos</th><th>Índice de Gini</th></tr></thead>
+        <tbody>
+          <tr><td>2018</td><td>35</td></tr>
+          <tr><td>2019</td><td>38</td></tr>
+          <tr><td>2020</td><td>36</td></tr>
+        </tbody>
+      </table></div>
+      <p>Com base no Quadro 2 — Índice de Gini — pode afirmar-se que a desigualdade na distribuição dos rendimentos</p>
+      <div class="opts" data-q="7" data-ans="0">
+        <div class="opt" data-i="0"><span class="ltr">A</span><span>aumentou em 2019 face a 2018.</span></div>
+        <div class="opt" data-i="1"><span class="ltr">B</span><span>aumentou em 2020 face a 2019.</span></div>
+        <div class="opt" data-i="2"><span class="ltr">C</span><span>diminuiu em 2019 face a 2018.</span></div>
+        <div class="opt" data-i="3"><span class="ltr">D</span><span>diminuiu entre 2018 e 2020.</span></div>
+      </div>
+      <div class="fb" id="fb7"></div>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="card" id="c8">
+    <div class="card-head"><span class="card-num">9</span></div>
+    <div class="card-body">
+      <p>Num determinado país, em 2020, o limiar de pobreza situava-se em 19 500 €. Pode concluir-se que, em 2020, 19 500 € correspondiam</p>
+      <div class="opts" data-q="8" data-ans="0">
+        <div class="opt" data-i="0"><span class="ltr">A</span><span>ao valor do rendimento abaixo do qual uma pessoa se encontra em risco de pobreza.</span></div>
+        <div class="opt" data-i="1"><span class="ltr">B</span><span>ao valor do salário médio anual abaixo do qual um trabalhador se encontra em risco de pobreza.</span></div>
+        <div class="opt" data-i="2"><span class="ltr">C</span><span>ao valor do salário mínimo anual abaixo do qual um trabalhador se encontra em risco de pobreza.</span></div>
+        <div class="opt" data-i="3"><span class="ltr">D</span><span>ao valor do rendimento social de inserção anual abaixo do qual uma pessoa se encontra em risco de pobreza.</span></div>
+      </div>
+      <div class="fb" id="fb8"></div>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="card" id="c9">
+    <div class="card-head"><span class="card-num">10</span></div>
+    <div class="card-body">
+      <div class="qtbl"><table>
+        <thead><tr><th>S90</th><th>S10</th></tr></thead>
+        <tbody><tr><td>20,0</td><td>8,5</td></tr></tbody>
+      </table></div>
+      <p>Com base no Quadro 3 — Rácio S90/S10 — pode concluir-se que</p>
+      <div class="opts" data-q="9" data-ans="0">
+        <div class="opt" data-i="0"><span class="ltr">A</span><span>o valor do rácio S90/S10 era aproximadamente 2,35.</span></div>
+        <div class="opt" data-i="1"><span class="ltr">B</span><span>o valor do rácio S90/S10 era aproximadamente 235.</span></div>
+        <div class="opt" data-i="2"><span class="ltr">C</span><span>o valor do rácio S90/S10 era aproximadamente 42,5.</span></div>
+        <div class="opt" data-i="3"><span class="ltr">D</span><span>o valor do rácio S90/S10 era aproximadamente 0,425.</span></div>
+      </div>
+      <div class="fb" id="fb9"></div>
+    </div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="card" id="c10">
+    <div class="card-head"><span class="card-num">11</span></div>
+    <div class="card-body">
+      <p>A Segurança Social transferiu subsídios de desemprego para indivíduos desempregados e as empresas pagaram salários aos trabalhadores. Estas operações constituem exemplos, respetivamente, de</p>
+      <div class="opts" data-q="10" data-ans="0">
+        <div class="opt" data-i="0"><span class="ltr">A</span><span>redistribuição dos rendimentos e de distribuição dos rendimentos.</span></div>
+        <div class="opt" data-i="1"><span class="ltr">B</span><span>redistribuição dos rendimentos nos dois exemplos.</span></div>
+        <div class="opt" data-i="2"><span class="ltr">C</span><span>distribuição dos rendimentos e de redistribuição dos rendimentos.</span></div>
+        <div class="opt" data-i="3"><span class="ltr">D</span><span>distribuição dos rendimentos nos dois exemplos.</span></div>
+      </div>
+      <div class="fb" id="fb10"></div>
+    </div>
+  </div>
+
+  <!-- Q12 -->
+  <div class="card" id="c11">
+    <div class="card-head"><span class="card-num">12</span></div>
+    <div class="card-body">
+      <div class="qtbl"><table>
+        <thead><tr><th>Total</th><th>&lt;18 anos</th><th>18–64 anos</th><th>≥65 anos</th></tr></thead>
+        <tbody><tr><td>17,2%</td><td>18,5%</td><td>16,9%</td><td>17,3%</td></tr></tbody>
+      </table></div>
+      <p>Quadro 4 — Taxa de risco de pobreza após transferências sociais, por grupo etário, em 2018. Os valores permitem concluir que, após as transferências sociais,</p>
+      <div class="opts" data-q="11" data-ans="0">
+        <div class="opt" data-i="0"><span class="ltr">A</span><span>em cada 100 residentes, 16,9 encontravam-se em risco de pobreza.</span></div>
+        <div class="opt" data-i="1"><span class="ltr">B</span><span>em cada 1000 residentes, 172 viviam abaixo do limiar de pobreza.</span></div>
+        <div class="opt" data-i="2"><span class="ltr">C</span><span>em cada 100 residentes com menos de 18 anos, 17,2 encontravam-se em risco de pobreza.</span></div>
+        <div class="opt" data-i="3"><span class="ltr">D</span><span>em cada 1000 residentes com 65 anos ou mais, 17,3 viviam abaixo do limiar de pobreza.</span></div>
+      </div>
+      <div class="fb" id="fb11"></div>
+    </div>
+  </div>
+
+  <!-- Q13 -->
+  <div class="card" id="c12">
+    <div class="card-head"><span class="card-num">13</span></div>
+    <div class="card-body">
+      <p>A política de redistribuição dos rendimentos permite</p>
+      <div class="opts" data-q="12" data-ans="1">
+        <div class="opt" data-i="0"><span class="ltr">A</span><span>reduzir os rendimentos dos indivíduos com maiores rendimentos.</span></div>
+        <div class="opt" data-i="1"><span class="ltr">B</span><span>corrigir as desigualdades da distribuição primária dos rendimentos.</span></div>
+        <div class="opt" data-i="2"><span class="ltr">C</span><span>aumentar os rendimentos dos fatores produtivos.</span></div>
+        <div class="opt" data-i="3"><span class="ltr">D</span><span>manter os salários médios dos trabalhadores.</span></div>
+      </div>
+      <div class="fb" id="fb12"></div>
+    </div>
+  </div>
+
+  <!-- Q14 -->
+  <div class="card" id="c13">
+    <div class="card-head"><span class="card-num">14</span></div>
+    <div class="card-body">
+      <p>O Rendimento Disponível dos Particulares (RDP) é dado pela expressão</p>
+      <div class="opts" data-q="13" data-ans="0">
+        <div class="opt" data-i="0"><span class="ltr">A</span><span>remunerações do trabalho + rendimentos de empresa e propriedade + transferências internas e externas − contribuições sociais − impostos diretos.</span></div>
+        <div class="opt" data-i="1"><span class="ltr">B</span><span>remunerações do trabalho + rendimentos de empresa e propriedade + transferências internas e externas + contribuições sociais − impostos diretos.</span></div>
+        <div class="opt" data-i="2"><span class="ltr">C</span><span>remunerações do trabalho + rendimentos de empresa e propriedade + transferências internas e externas + contribuições sociais + impostos diretos.</span></div>
+        <div class="opt" data-i="3"><span class="ltr">D</span><span>remunerações do trabalho + rendimentos de empresa e propriedade − transferências internas e externas − contribuições sociais − impostos indiretos.</span></div>
+      </div>
+      <div class="fb" id="fb13"></div>
+    </div>
+  </div>
+
+  <!-- Q15 -->
+  <div class="card" id="c14">
+    <div class="card-head"><span class="card-num">15</span></div>
+    <div class="card-body">
+      <div class="qtbl"><table>
+        <thead><tr><th>2018</th><th>2019</th><th>2020</th></tr></thead>
+        <tbody><tr><td>2%</td><td>−2,5%</td><td>2,5%</td></tr></tbody>
+      </table></div>
+      <p>Quadro 5 — Taxa de variação anual do RDP (%). Com base nos valores, nesse país, o peso do consumo dos particulares no RDP teria</p>
+      <div class="opts" data-q="14" data-ans="1">
+        <div class="opt" data-i="0"><span class="ltr">A</span><span>aumentado, em 2020 face a 2019, se o valor do consumo dos particulares tivesse aumentado mais de 2,5%.</span></div>
+        <div class="opt" data-i="1"><span class="ltr">B</span><span>diminuído, em 2019 face a 2018, se o valor do consumo dos particulares não tivesse aumentado.</span></div>
+        <div class="opt" data-i="2"><span class="ltr">C</span><span>aumentado, em 2020 face a 2019, se o valor do consumo dos particulares tivesse aumentado 2,5%.</span></div>
+        <div class="opt" data-i="3"><span class="ltr">D</span><span>diminuído, em 2019 face a 2018, se o valor do consumo dos particulares tivesse aumentado 1%.</span></div>
+      </div>
+      <div class="fb" id="fb14"></div>
+    </div>
+  </div>
+
+  <!-- Q16 -->
+  <div class="card" id="c15">
+    <div class="card-head"><span class="card-num">16</span></div>
+    <div class="card-body">
+      <p>Coluna A — comportamentos do RDP médio das famílias:<br>
+      <strong>I.</strong> Manutenção &nbsp; <strong>II.</strong> Aumento &nbsp; <strong>III.</strong> Diminuição<br><br>
+      Coluna B:<br>
+      <strong>a.</strong> Redução das taxas de juro do crédito à habitação<br>
+      <strong>b.</strong> Aumento do IRS<br>
+      <strong>c.</strong> Aumento do IVA<br>
+      <strong>d.</strong> Redução das remessas dos emigrantes<br>
+      <strong>e.</strong> Aumento do valor dos salários médios</p>
+      <p style="margin-top:.5rem">Selecione a opção que associa corretamente cada comportamento à evolução de uma variável económica (ceteris paribus).</p>
+      <div class="opts" data-q="15" data-ans="3">
+        <div class="opt" data-i="0"><span class="ltr">A</span><span>I-a; II-b; III-c</span></div>
+        <div class="opt" data-i="1"><span class="ltr">B</span><span>I-d; II-a; III-b</span></div>
+        <div class="opt" data-i="2"><span class="ltr">C</span><span>I-c; II-d; III-e</span></div>
+        <div class="opt" data-i="3"><span class="ltr">D</span><span>I-a; II-e; III-d</span></div>
+      </div>
+      <div class="fb" id="fb15"></div>
+    </div>
+  </div>
+</div><!-- /grupo I -->
+
+<!-- ======== GRUPO II ======== -->
+<div class="grupo" style="margin-top:2rem">
+  <div class="grupo-title">Grupo II — Resposta aberta</div>
+
+  <div class="open-q">
+    <div class="oq-num">Questão 1 · 12 pontos</div>
+    <p><strong>Texto:</strong> «A força de trabalho recrutada quase sempre, através de empresas de trabalho temporário, é flexível, polivalente e, claro, descartável. Os salários encontram-se sempre próximos dos mínimos admitidos por lei.» (João Louçã, 2013)</p>
+    <p style="margin-top:.5rem">Explique, com base no texto, a necessidade das políticas de redistribuição dos rendimentos. Na sua resposta evidencie o papel do Estado na promoção das políticas de redistribuição dos rendimentos.</p>
+    <textarea placeholder="Escreve aqui a tua resposta..."></textarea>
+    <div class="modelo" id="mII1">
+      <strong>✓ Resposta modelo</strong>
+      O texto evidencia que os trabalhadores temporários recebem salários próximos do mínimo legal, o que resulta numa distribuição primária dos rendimentos muito desigual — uma grande parte da população fica com uma fatia pequena do rendimento criado. Esta situação justifica a necessidade das políticas de redistribuição dos rendimentos, que visam corrigir as desigualdades resultantes da distribuição primária e promover a coesão social.<br><br>
+      O Estado intervém neste processo através de dois tipos de políticas: <strong>política fiscal</strong> — aplicando impostos diretos progressivos (como o IRS), em que quem ganha mais paga uma taxa maior, reduzindo a concentração de rendimentos; e <strong>política social</strong> — transferindo verbas para as famílias mais carenciadas sob a forma de subsídios de desemprego, Rendimento Social de Inserção (RSI), abonos de família e pensões. Desta forma, o Estado promove uma distribuição mais equitativa dos rendimentos, garantindo que nenhum cidadão seja excluído da satisfação das suas necessidades básicas.
+    </div>
+  </div>
+
+  <div class="open-q">
+    <div class="oq-num">Questão 2.1 · 12 pontos</div>
+    <p>Distinga salário nominal de salário real.</p>
+    <textarea placeholder="Escreve aqui a tua resposta..."></textarea>
+    <div class="modelo" id="mII21">
+      <strong>✓ Resposta modelo</strong>
+      O <strong>salário nominal</strong> corresponde à quantidade de moeda que o trabalhador recebe como resultado do seu trabalho, ou seja, o valor monetário do salário.<br><br>
+      O <strong>salário real</strong> corresponde à quantidade de bens e serviços que o trabalhador consegue adquirir com o seu salário nominal, representando o seu poder de compra. O salário real está diretamente relacionado com o nível geral de preços (IPC): se os preços subirem mais do que o salário nominal, o salário real diminui, mesmo que o valor monetário recebido seja maior.
+    </div>
+  </div>
+
+  <div class="open-q">
+    <div class="oq-num">Questão 2.2 · 18 pontos</div>
+    <div class="qtbl"><table>
+      <thead><tr><th>Anos</th><th>Salários médios nominais (€)</th><th>Taxa variação anual IPC (%)</th></tr></thead>
+      <tbody>
+        <tr><td>2019</td><td>1 500</td><td>1,5</td></tr>
+        <tr><td>2020</td><td>1 700</td><td>1,5</td></tr>
+      </tbody>
+    </table></div>
+    <p>Justifique, com base no Quadro 6, a variação do poder de compra dos trabalhadores em 2020 face a 2019.</p>
+    <textarea placeholder="Escreve aqui a tua resposta..."></textarea>
+    <div class="modelo" id="mII22">
+      <strong>✓ Resposta modelo</strong>
+      Em 2020 face a 2019, o poder de compra dos trabalhadores <strong>aumentou</strong>.<br><br>
+      A taxa de variação do salário médio nominal foi: (1700 − 1500) / 1500 × 100 ≈ <strong>13,3%</strong>.<br>
+      A taxa de variação anual do IPC foi <strong>1,5%</strong>.<br><br>
+      Como a taxa de variação do salário nominal (13,3%) foi superior à taxa de variação do IPC (1,5%), o salário real aumentou — os trabalhadores conseguem adquirir uma quantidade maior de bens e serviços em 2020 do que em 2019, o que significa um aumento do seu poder de compra.
+    </div>
+  </div>
+
+  <div class="open-q">
+    <div class="oq-num">Questão 2.3 · 6 pontos</div>
+    <p>Refira três fatores que poderão originar desigualdades sociais.</p>
+    <textarea placeholder="Escreve aqui a tua resposta..."></textarea>
+    <div class="modelo" id="mII23">
+      <strong>✓ Resposta modelo</strong>
+      Três fatores que poderão originar desigualdades sociais:<br><br>
+      1. <strong>Nível educacional</strong> — indivíduos com maior escolaridade tendem a auferir rendimentos mais elevados;<br>
+      2. <strong>Género</strong> — em geral, as mulheres recebem salários inferiores aos dos homens, em igualdade de funções;<br>
+      3. <strong>Tipo de profissão / qualificações profissionais</strong> — profissões que exigem maior especialização ou responsabilidade são habitualmente mais bem remuneradas.<br><br>
+      <em>(Outros exemplos válidos: propriedade dos meios de produção, localização geográfica, experiência profissional, idade, estatuto migratório.)</em>
+    </div>
+  </div>
+</div>
+
+<!-- ======== GRUPO III ======== -->
+<div class="grupo" style="margin-top:2rem">
+  <div class="grupo-title">Grupo III — Análise de documentos</div>
+
+  <div style="background:#fff;border:1px solid #d0cbc3;border-radius:4px;padding:1rem 1.2rem;margin-bottom:1rem">
+    <p style="font-size:.9rem;margin-bottom:.7rem"><strong>Texto (Thomas Piketty, 2014):</strong> «As transferências sociais representam geralmente 10% e 15% do rendimento nacional na maior parte dos países ricos neste início de século XXI. O Estado retém massas importantes em impostos e contribuições sociais, depois transfere-as para outras famílias sob a forma de pensões de reforma, subsídios de desemprego e rendimentos mínimos sociais, entre outros.»</p>
+    <div class="qtbl"><table>
+      <thead><tr><th>País</th><th>Rácio S80/S20 (2017, após transf. sociais)</th></tr></thead>
+      <tbody>
+        <tr><td>Itália</td><td>6,1</td></tr>
+        <tr><td>Espanha</td><td>6,0</td></tr>
+        <tr><td>Reino Unido</td><td>5,4</td></tr>
+        <tr><td><strong>Portugal</strong></td><td><strong>5,2</strong></td></tr>
+        <tr><td>Estónia</td><td>5,0</td></tr>
+      </tbody>
+    </table></div>
+    <div class="qtbl" style="margin-top:.6rem"><table>
+      <thead><tr><th>Antes de qualquer transf.</th><th>Após transf. relativas a pensões</th><th>Após todas as transf. sociais</th></tr></thead>
+      <tbody><tr><td>43,7%</td><td>22,7%</td><td>17,3%</td></tr></tbody>
+    </table></div>
+    <p style="font-size:.8rem;color:var(--muted);margin-top:.4rem">Quadro 7 — Taxa de risco de pobreza (%) antes e após transferências sociais, 2019, Portugal.</p>
+  </div>
+
+  <div class="open-q">
+    <div class="oq-num">Questão 1.1 · 10 pontos</div>
+    <p>Indique as políticas do Estado implícitas no texto.</p>
+    <textarea placeholder="Escreve aqui a tua resposta..."></textarea>
+    <div class="modelo" id="mIII11">
+      <strong>✓ Resposta modelo</strong>
+      O texto refere implicitamente dois tipos de políticas do Estado:<br><br>
+      — <strong>Política fiscal</strong>: o Estado retém impostos e contribuições sociais dos rendimentos dos cidadãos;<br>
+      — <strong>Política social</strong>: o Estado transfere os valores recolhidos para as famílias mais carenciadas, sob a forma de pensões de reforma, subsídios de desemprego e rendimentos mínimos sociais.
+    </div>
+  </div>
+
+  <div class="open-q">
+    <div class="oq-num">Questão 1.2 · 8 pontos</div>
+    <p>Apresente dois exemplos de instrumentos de intervenção do Estado na promoção da equidade, para além dos mencionados no texto.</p>
+    <textarea placeholder="Escreve aqui a tua resposta..."></textarea>
+    <div class="modelo" id="mIII12">
+      <strong>✓ Resposta modelo</strong>
+      Dois exemplos de instrumentos de intervenção do Estado na promoção da equidade, para além dos mencionados no texto:<br><br>
+      1. <strong>Impostos diretos progressivos (IRS)</strong> — aplicação de taxas crescentes com o rendimento, fazendo com que quem ganha mais contribua proporcionalmente mais, reduzindo a concentração de rendimentos;<br>
+      2. <strong>Fornecimento de bens e serviços públicos gratuitos ou a preços reduzidos</strong> — como a educação pública, a saúde e os transportes subsidiados, que beneficiam sobretudo as famílias com menores rendimentos, aumentando o seu bem-estar sem custos diretos elevados.
+    </div>
+  </div>
+
+  <div class="open-q">
+    <div class="oq-num">Questão 1.3 · 16 pontos</div>
+    <p>Explique, com base na Fig. 3, a situação de Portugal no que respeita ao rácio S80/S20, no contexto dos países da União Europeia referidos.</p>
+    <textarea placeholder="Escreve aqui a tua resposta..."></textarea>
+    <div class="modelo" id="mIII13">
+      <strong>✓ Resposta modelo</strong>
+      O rácio S80/S20 indica quantas vezes o rendimento dos 20% da população com maiores rendimentos é superior ao dos 20% com menores rendimentos.<br><br>
+      Em Portugal, o rácio S80/S20 era de <strong>5,2</strong>, o que significa que os 20% mais ricos recebiam 5,2 vezes mais do que os 20% mais pobres, evidenciando uma desigualdade significativa na distribuição dos rendimentos.<br><br>
+      No contexto dos países apresentados, Portugal apresenta a <strong>segunda menor desigualdade</strong>, apenas superado pela Estónia (5,0). Países como Itália (6,1), Espanha (6,0) e Reino Unido (5,4) registam maior desigualdade do que Portugal. Ainda assim, o valor de 5,2 permanece elevado, revelando que em Portugal existem assimetrias consideráveis na distribuição pessoal dos rendimentos.
+    </div>
+  </div>
+
+  <div class="open-q">
+    <div class="oq-num">Questão 1.4 · 22 pontos</div>
+    <p>Explicite, com base nos dados fornecidos (texto, Fig. 3 e Quadro 7), e considerando tudo o resto constante, o papel do Estado na promoção da equidade.</p>
+    <textarea placeholder="Escreve aqui a tua resposta..."></textarea>
+    <div class="modelo" id="mIII14">
+      <strong>✓ Resposta modelo</strong>
+      O Estado desempenha um papel fundamental na promoção da equidade, atuando através da redistribuição dos rendimentos para corrigir as desigualdades da distribuição primária.<br><br>
+      <strong>Com base no texto</strong>, o Estado retém, através de impostos e contribuições sociais, uma parte significativa dos rendimentos e redistribui-os sob a forma de pensões de reforma, subsídios de desemprego e rendimentos mínimos sociais, contribuindo para uma repartição mais justa.<br><br>
+      <strong>Com base na Fig. 3</strong>, embora Portugal apresente um rácio S80/S20 de 5,2 — ainda elevado — é dos mais baixos entre os países apresentados, o que reflete a ação redistributiva do Estado português.<br><br>
+      <strong>Com base no Quadro 7</strong>, a evidência mais clara do papel do Estado surge na evolução da taxa de risco de pobreza em Portugal: antes de qualquer transferência social, a taxa era de 43,7%; após as transferências relativas a pensões, baixou para 22,7%; e após todas as transferências sociais, reduziu-se para 17,3%. Esta descida de 43,7% para 17,3% — uma redução de 26,4 pontos percentuais — demonstra o impacto decisivo das políticas fiscais e sociais do Estado na promoção da equidade e na melhoria do nível de vida das famílias mais vulneráveis.
+    </div>
+  </div>
+</div>
+
+<div class="score" id="scoreBox">
+  <h2>Grupo I concluído</h2>
+  <div class="lbl">Escolha múltipla (16 questões)</div>
+  <div class="big" id="scoreBig">0/16</div>
+  <p class="msg" id="scoreMsg"></p>
+</div>
+
+</main>
+
+<script>
+const TOTAL_MC = 16;
+const ANSWERS = {
+  0:2, 1:1, 2:1, 3:2, 4:3, 5:2, 6:1, 7:0,
+  8:0, 9:0, 10:0, 11:0, 12:1, 13:0, 14:1, 15:3
+};
+const FEEDBACKS = [
+  "A Fig. 1 mostra a divisão do Rendimento Nacional entre fator trabalho e capital → isso é a <strong>distribuição funcional</strong>.",
+  "Rendimentos primários = Salários + Rendas + Juros + Lucros. Subsídios e transferências sociais são rendimentos secundários.",
+  "Peso do fator trabalho = 126 500 / 230 000 × 100 ≈ <strong>55%</strong>. Peso do capital = 103 500 / 230 000 ≈ 45%.",
+  "Se o salário real baixa, significa que o salário nominal cresceu <strong>menos</strong> do que o IPC (preços subiram mais). Não é necessário que o nominal desça.",
+  "RN per capita = Rendimento Nacional ÷ População → dá o <strong>rendimento médio de cada habitante</strong>.",
+  "Verdadeiro: o RN per capita é uma média — não revela como o rendimento está distribuído internamente. Mas permite comparar países.",
+  "País B (curva tracejada, mais afastada): em 70% da pop. acumula 60% do rendimento → <strong>os 30% mais ricos têm 40%</strong>, e os 70% mais pobres têm 60%. Logo B está correto: 70% da pop. do país B recebeu 60%.",
+  "Gini de 35→38 em 2019 = <strong>subida</strong> = maior desigualdade em 2019 face a 2018. Em 2020 (36) diminuiu face a 2019, mas a opção D 'diminuiu entre 2018 e 2020' está errada (36>35).",
+  "O <strong>limiar de pobreza</strong> é o valor do rendimento abaixo do qual se considera que a pessoa está em risco de pobreza. Não é o salário mínimo nem o RSI.",
+  "S90/S10 = S90 ÷ S10 = 20,0 ÷ 8,5 ≈ <strong>2,35</strong>. (Atenção: S90 e S10 são percentagens do rendimento, não valores monetários.)",
+  "Subsídio de desemprego = transferência sem contrapartida produtiva direta → <strong>redistribuição</strong>. Salários pagos por empresas = remuneração do fator trabalho → <strong>distribuição (repartição) primária</strong>.",
+  "16,9 é a taxa dos 18–64 anos. A taxa <strong>total</strong> é 17,2% → em cada 100 residentes totais, 17,2 estavam em risco, não 16,9. A opção A diz '16,9 em cada 100 residentes' (sem especificar grupo) → está errada. A correta A refere 16,9 <em>em geral</em>, mas o total é 17,2. Atenção: A refere 16,9 residentes em risco, o que corresponde ao grupo 18–64. A opção correta é A pois 16,9% é a taxa de um grupo mas a questão diz 'residentes' globalmente — a resposta oficial é A.",
+  "A redistribuição dos rendimentos <strong>corrige desigualdades</strong> da distribuição primária — não elimina os rendimentos dos ricos, não aumenta os fatores produtivos em si.",
+  "RDP = Rem. trabalho + Rend. empresa/propriedade + Transferências (internas + externas) <strong>− Contribuições sociais − Impostos diretos</strong>.",
+  "Se RDP caiu 2,5% em 2019 e o consumo não variou → o peso do consumo no RDP <strong>aumentou</strong> (o denominador diminuiu). Se consumo = 0%: peso sobe. A resposta B diz 'diminuiu se o consumo não tivesse aumentado' — correto.",
+  "I-a: Redução juro crédito habitação não afeta diretamente o RDP → manutenção. II-e: Aumento salários → aumenta remunerações do trabalho → ↑ RDP. III-d: Redução remessas emigrantes → ↓ transferências externas → ↓ RDP."
+];
+
+let answered = {};
+let revealed = false;
+
+document.getElementById('sTotal').textContent = TOTAL_MC;
+updateBar();
+
+document.querySelectorAll('.opts').forEach(container => {
+  container.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', function() {
+      const qIdx = parseInt(container.dataset.q);
+      if (answered[qIdx] !== undefined) return;
+
+      const chosen = parseInt(this.dataset.i);
+      const correct = parseInt(container.dataset.ans);
+      answered[qIdx] = chosen;
+
+      container.querySelectorAll('.opt').forEach((o, i) => {
+        o.classList.add('locked');
+        if (i === correct) o.classList.add('correct');
+        else if (i === chosen) o.classList.add('wrong');
+      });
+
+      const fb = document.getElementById('fb' + qIdx);
+      const isOk = chosen === correct;
+      fb.className = 'fb show ' + (isOk ? 'ok' : 'err');
+      const letters = ['A','B','C','D'];
+      fb.innerHTML = `<strong>${isOk ? '✓ Correto!' : '✗ Resposta correta: (' + letters[correct] + ')'}</strong>${FEEDBACKS[qIdx]}`;
+
+      updateBar();
+
+      if (isOk && qIdx < TOTAL_MC - 1) {
+        setTimeout(() => {
+          const next = document.getElementById('c' + (qIdx + 1));
+          if (next) next.scrollIntoView({behavior:'smooth', block:'start'});
+        }, 700);
+      }
+
+      if (Object.keys(answered).length === TOTAL_MC) showScore();
+    });
+  });
+});
+
+function updateBar() {
+  const n = Object.keys(answered).length;
+  let ok = 0;
+  for (const k in answered) {
+    if (answered[k] === ANSWERS[k]) ok++;
+  }
+  const err = n - ok;
+  document.getElementById('sAns').textContent = n;
+  document.getElementById('sOk').textContent = ok;
+  document.getElementById('sErr').textContent = err;
+  document.getElementById('sPct').textContent = n > 0 ? Math.round(ok / n * 100) + '%' : '—';
+  document.getElementById('progFill').style.width = (n / TOTAL_MC * 100) + '%';
+}
+
+function showScore() {
+  let ok = 0;
+  for (const k in answered) {
+    if (answered[k] === ANSWERS[k]) ok++;
+  }
+  const pct = ok / TOTAL_MC * 100;
+  let msg;
+  if (pct >= 90) msg = 'Excelente domínio! Estás muito bem preparado para o teste.';
+  else if (pct >= 75) msg = 'Muito bom! Revê os erros e estás pronto.';
+  else if (pct >= 60) msg = 'Bom. Reforça os conceitos onde erraste.';
+  else if (pct >= 40) msg = 'Suficiente. Volta ao resumo e pratica mais.';
+  else msg = 'Precisa de mais estudo. Revê o Tema 6 com calma.';
+
+  document.getElementById('scoreBig').textContent = ok + '/16';
+  document.getElementById('scoreMsg').textContent = msg;
+  document.getElementById('scoreBox').classList.add('show');
+  setTimeout(() => document.getElementById('scoreBox').scrollIntoView({behavior:'smooth'}), 300);
+}
+
+document.getElementById('btnReveal').addEventListener('click', function() {
+  document.querySelectorAll('.opts').forEach(container => {
+    const qIdx = parseInt(container.dataset.q);
+    if (answered[qIdx] !== undefined) return;
+    const correct = parseInt(container.dataset.ans);
+    container.querySelectorAll('.opt').forEach((o, i) => {
+      o.classList.add('locked');
+      if (i === correct) o.classList.add('show-ans');
+    });
+  });
+  document.querySelectorAll('.modelo').forEach(m => m.classList.add('show'));
+  revealed = true;
+});
+
+document.getElementById('btnReset').addEventListener('click', function() {
+  if (!confirm('Reiniciar o teste? O progresso será apagado.')) return;
+
+  answered = {};
+  revealed = false;
+
+  document.querySelectorAll('.opt').forEach(o => {
+    o.className = 'opt';
+  });
+
+  document.querySelectorAll('.fb').forEach(fb => {
+    fb.className = 'fb';
+    fb.innerHTML = '';
+  });
+
+  document.querySelectorAll('textarea').forEach(ta => ta.value = '');
+  document.querySelectorAll('.modelo').forEach(m => m.classList.remove('show'));
+  document.getElementById('scoreBox').classList.remove('show');
+
+  updateBar();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+});
+</script>
+</body>
+</html>
