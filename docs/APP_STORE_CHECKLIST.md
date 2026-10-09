@@ -40,7 +40,7 @@ Bundle ID: `com.lucas.KebabLocator2` | Version: 1.0 | Build: 1
 | Keywords | ⬜ Preencher | Ver metadata |
 | URL de Suporte | ⬜ Precisas de URL | Ex: GitHub Issues ou email |
 | URL de Privacidade | ⬜ OBRIGATÓRIO | Criar página de privacidade (ver nota abaixo) |
-| Screenshots iPhone 6.5" | ⬜ Fazer | 1242×2688px — min 1, ideal 3-5 |
+| Screenshots iPhone 6.9" + 6.1" + iPad 13" | ⬜ Fazer | 1320×2868, 1206×2622, 2064×2752 — ver `APP_STORE_METADATA.md` |
 | Ícone 1024×1024 PNG | ⬜ Verificar | Sem transparência, sem arredondamento |
 | Copyright | ⬜ Preencher | `© 2026 Lucas` |
 
