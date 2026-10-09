@@ -1,0 +1,46 @@
+{
+  "skill_name": "app-store-assets",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Revê a metadata da App Store que tenho em docs/APP_STORE_METADATA.md (KebabLocator) e diz-me tudo o que o App Store Connect ou a App Review vão rejeitar antes de eu submeter.",
+      "expected_output": "Audit table with severities. Must catch: keywords are 101 bytes (>100), keywords repeat 'kebab'/'near' already in name/subtitle, '©' typed in copyright, only 6.5\" screenshots planned (6.1\" Dynamic Island medium set required), 'best' unverifiable claim in promo text. Gives corrected keyword string ≤100 bytes and the exact sizes to export.",
+      "files": ["docs/APP_STORE_METADATA.md"],
+      "assertions": [
+        "Flags the keywords field as over 100 bytes",
+        "Flags words in keywords that already appear in the name or subtitle",
+        "Says the copyright field must not include the © symbol",
+        "Says an iPhone 6.1\" Dynamic Island (medium) screenshot set (1206×2622 or 1179×2556) is required",
+        "Provides a corrected keyword string of at most 100 bytes",
+        "Uses BLOCKER/WARNING/TIP severities with a rule reference"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I'm launching GolfTracker PT (SwiftUI golf app with WHS handicap, rounds, stats, Apple Watch scorecard; runs on iPhone and iPad; Pro subscription unlocks advanced stats). Plan my App Store screenshots: order, what screen, captions in en-US and pt-PT, and the exact pixel sizes I need to export.",
+      "expected_output": "Ordered screenshot plan (≤10) with strongest benefit first, captions ≤ ~6 words in en-US and European Portuguese, disclosure that advanced stats need Pro, exact sizes 1320×2868 (6.9\"), 1206×2622 (6.1\"), 2064×2752 (iPad 13\"), plus Apple Watch sizes if a Watch app ships, simulator + status bar guidance.",
+      "files": [],
+      "assertions": [
+        "Lists 1320×2868 for iPhone 6.9\"",
+        "Lists 1206×2622 or 1179×2556 for iPhone 6.1\"",
+        "Lists 2064×2752 or 2048×2732 for iPad 13\"",
+        "Notes that features behind the Pro subscription must be disclosed (2.3.2)",
+        "Provides pt-PT captions (European Portuguese, e.g. 'tu' forms, not Brazilian 'você')",
+        "Emphasises that the first 3 screenshots appear in search results"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "App Store Connect won't accept my app preview. It's a 42 second screen recording from the iPhone 17 Pro Max simulator, 1320x2868 at 60fps, no sound. Fix it — give me the exact command.",
+      "expected_output": "Explains the three problems (resolution must be 886×1920, max 30 fps, 15–30 s) plus missing audio track; gives an ffmpeg command producing 886×1920 30 fps H.264 High L4.0 ~11 Mbps with silent stereo AAC 256k and -t 30; suggests poster frame at 5 s and re-checking with check_assets.py.",
+      "files": [],
+      "assertions": [
+        "States the accepted resolution is 886×1920",
+        "States the frame rate must be at most 30 fps",
+        "States the length must be between 15 and 30 seconds",
+        "Provides an ffmpeg command with scale to 886:1920, fps=30 and a 30 s limit",
+        "Adds a stereo AAC audio track (silent) in the command"
+      ]
+    }
+  ]
+}
